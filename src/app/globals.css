@@ -3,12 +3,19 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --brand-yellow: #FFD700;
+  --brand-black: #121212;
+  --brand-dark: #1E1E1E;
+  --brand-white: #FFFFFF;
+  --text-muted: #A0A0A0;
+  --border: #2A2A2A;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-outfit);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -32,4 +39,42 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+/* Admin Dashboard Styles */
+@keyframes modalSlide {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.btn-yellow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+nav a:hover {
+  background: var(--brand-yellow) !important;
+  color: var(--brand-black) !important;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+.content-box {
+  transition: box-shadow 0.3s ease;
+}
+
+.content-box:hover {
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.1);
+}
+
+.modal-overlay {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
