@@ -334,10 +334,7 @@ export default function AdminDashboard() {
       {/* Sidebar */}
       <aside className="w-64 bg-gray-900 border-r border-gray-700 flex flex-col p-6 fixed h-full z-10">
         <div className="logo flex items-center gap-2.5 mb-12 text-xl font-bold text-yellow-400 uppercase tracking-wider">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2"></polygon>
-          </svg>
-          <span>Bistro Noir</span>
+        <img src="/logo.png" alt="Logo" width="200" height="100" />
         </div>
         <nav>
           <ul className="space-y-3">
