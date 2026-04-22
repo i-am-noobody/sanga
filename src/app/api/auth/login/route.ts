@@ -3,6 +3,22 @@ import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 import { signToken } from "../../../lib/auth";
 
+function isRecoverableAuthDatabaseError(error: unknown): boolean {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  const message = error.message.toLowerCase();
+
+  return (
+    message.includes("p1001") ||
+    message.includes("p2021") ||
+    message.includes("can't reach database server") ||
+    message.includes("table") && message.includes("does not exist") ||
+    message.includes("relation") && message.includes("does not exist")
+  );
+}
+
 export async function POST(req: Request) {
   try {
     const { email, password } = await req.json();
@@ -14,8 +30,10 @@ export async function POST(req: Request) {
       );
     }
 
+    const normalizedEmail = String(email).trim().toLowerCase();
+
     const admin = await prisma.admin.findUnique({
-      where: { email },
+      where: { email: normalizedEmail },
     });
 
     if (!admin) {
@@ -57,7 +75,23 @@ export async function POST(req: Request) {
     response.cookies.set("token", token, cookieOptions);
 
     return response;
-  } catch {
+  } catch (error) {
+    console.error("LOGIN ERROR:", error);
+
+    if (error instanceof Error && error.message.includes("JWT_SECRET is not configured")) {
+      return NextResponse.json(
+        { error: "Server configuration error" },
+        { status: 500 }
+      );
+    }
+
+    if (isRecoverableAuthDatabaseError(error)) {
+      return NextResponse.json(
+        { error: "Authentication service is temporarily unavailable" },
+        { status: 503 }
+      );
+    }
+
     return NextResponse.json(
       { error: "Server error" },
       { status: 500 }
