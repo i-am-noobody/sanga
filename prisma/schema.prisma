@@ -29,6 +29,7 @@ model MenuItem {
   price       Float
   imageUrl    String
   category    String
+  subcategory String?
   isAvailable Boolean  @default(true)
   createdAt   DateTime @default(now())
   orderItems  OrderItem[]

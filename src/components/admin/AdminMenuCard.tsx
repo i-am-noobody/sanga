@@ -1,9 +1,11 @@
 import type { ChangeEvent, FormEvent } from "react";
+import { MENU_TAXONOMY, getSubcategoryOptions } from "@/lib/menuTaxonomy";
 
 interface Props {
   form: {
     name: string;
     category: string;
+    subcategory: string;
     price: string;
     description: string;
   };
@@ -16,8 +18,8 @@ interface Props {
 
 export default function AdminMenuCard({ form, imageFile, loading, onFormChange, onFileChange, onSubmit }: Props) {
   return (
-    <div className="rounded-[2rem] border border-yellow-300/20 bg-[#070707]/95 p-8 shadow-[0_24px_80px_-50px_rgba(255,214,0,0.35)]">
-      <div className="flex items-center justify-between gap-4">
+    <div className="rounded-[2rem] border border-yellow-300/20 bg-[#070707]/95 p-4 shadow-[0_24px_80px_-50px_rgba(255,214,0,0.35)] sm:p-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.35em] text-yellow-300/70">Menu creation</p>
           <h2 className="mt-3 text-2xl font-semibold text-white">Add a new dish</h2>
@@ -40,14 +42,30 @@ export default function AdminMenuCard({ form, imageFile, loading, onFormChange, 
             required
             className="w-full rounded-3xl border border-yellow-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-yellow-300"
           />
-          <input
+          <select
             value={form.category}
-            onChange={(event) => onFormChange({ category: event.target.value })}
-            placeholder="Category"
-            required
+            onChange={(event) => onFormChange({ category: event.target.value, subcategory: "" })}
             className="w-full rounded-3xl border border-yellow-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-yellow-300"
-          />
+          >
+            {MENU_TAXONOMY.map((category) => (
+              <option key={category.value} value={category.value}>
+                {category.label}
+              </option>
+            ))}
+          </select>
         </div>
+        <input
+          value={form.subcategory}
+          onChange={(event) => onFormChange({ subcategory: event.target.value })}
+          placeholder="Subcategory (optional)"
+          list="admin-menu-subcategories"
+          className="w-full rounded-3xl border border-yellow-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-yellow-300"
+        />
+        <datalist id="admin-menu-subcategories">
+          {getSubcategoryOptions(form.category).map((subcategory) => (
+            <option key={subcategory} value={subcategory} />
+          ))}
+        </datalist>
         <input
           value={form.price}
           onChange={(event) => onFormChange({ price: event.target.value })}

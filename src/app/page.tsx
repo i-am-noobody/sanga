@@ -1,5 +1,6 @@
 ﻿'use client';
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { CartItem, MenuItem } from "@/components/home/types";
 import Navbar from "@/components/home/Navbar";
@@ -13,6 +14,7 @@ import ContactSection from "@/components/home/ContactSection";
 import OrderModal from "@/components/home/OrderModal";
 
 export default function Home() {
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [customerName, setCustomerName] = useState("");
@@ -30,7 +32,6 @@ export default function Home() {
       }
       return [...prev, { menuItem: item, quantity: 1 }];
     });
-    setIsModalOpen(true);
   };
 
   const updateQuantity = (id: number, quantity: number) => {
@@ -66,7 +67,6 @@ export default function Home() {
     const items = cart.map((entry) => ({
       menuItemId: entry.menuItem.id,
       quantity: entry.quantity,
-      price: entry.menuItem.price * entry.quantity,
     }));
 
     try {
@@ -89,13 +89,13 @@ export default function Home() {
       }
 
       const createdOrder = await res.json();
-      alert(`Order placed successfully! Your order #${createdOrder.id} has been created. Check your email for confirmation and track it at /orders using the email you provided.`);
       setIsModalOpen(false);
       setCart([]);
       setCustomerName("");
       setCustomerEmail("");
       setCustomerPhone("");
       setPickupTime("");
+      router.push(`/orders/${createdOrder.id}`);
     } catch (error) {
       console.error("Order submission error:", error);
       alert("Failed to place order. Please check your internet connection and try again.");
@@ -109,18 +109,20 @@ export default function Home() {
         onOrderClick={() => setIsModalOpen(true)}
       />
 
-      <HeroSection
-        onOrderNow={() => document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" })}
-      />
+      <main className="w-full">
+        <HeroSection
+          onOrderNow={() => document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" })}
+        />
 
-      <MenuSection onAddToCart={addToCart} />
-      <AboutSection />
-      <GallerySection />
-      <TestimonialsSection />
-      <LocationSection />
-      <ContactSection />
+        <MenuSection onAddToCart={addToCart} />
+        <GallerySection />
+        <AboutSection />
+        <TestimonialsSection />
+        <LocationSection />
+        <ContactSection />
+      </main>
 
-      <footer className="bg-gray-900 py-16 px-4 sm:px-6 md:px-8">
+      <footer className="bg-gray-900 px-4 py-14 sm:px-6 md:px-8">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h3 className="text-2xl font-bold text-yellow-400 mb-4">MR SANGA'S</h3>
@@ -130,8 +132,23 @@ export default function Home() {
             <h4 className="text-lg font-semibold text-yellow-400 mb-4">Quick Links</h4>
             <ul className="space-y-2 text-gray-400">
               <li>
+                <a href="#about" className="hover:text-white transition-colors">
+                  About
+                </a>
+              </li>
+              <li>
                 <a href="#menu" className="hover:text-white transition-colors">
                   Menu
+                </a>
+              </li>
+              <li>
+                <a href="#gallery" className="hover:text-white transition-colors">
+                  Gallery
+                </a>
+              </li>
+              <li>
+                <a href="#testimonials" className="hover:text-white transition-colors">
+                  Reviews
                 </a>
               </li>
               <li>
@@ -142,6 +159,11 @@ export default function Home() {
               <li>
                 <a href="#contact" className="hover:text-white transition-colors">
                   Contact
+                </a>
+              </li>
+              <li>
+                <a href="/orders" className="hover:text-white transition-colors">
+                  My Orders
                 </a>
               </li>
             </ul>
@@ -155,7 +177,7 @@ export default function Home() {
       </footer>
 
       <button
-        className="fixed bottom-4 right-4 bg-yellow-400 text-black p-4 rounded-full shadow-lg hover:bg-yellow-500 transition-colors z-40"
+        className="fixed bottom-3 right-3 z-40 rounded-full bg-yellow-400 p-3 text-black shadow-lg transition-colors hover:bg-yellow-500 sm:bottom-4 sm:right-4 sm:p-4"
         onClick={() => setIsModalOpen(true)}
       >
         Cart ({cart.length})

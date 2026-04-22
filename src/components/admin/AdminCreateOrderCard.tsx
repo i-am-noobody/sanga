@@ -41,7 +41,7 @@ export default function AdminCreateOrderCard({
   };
 
   return (
-    <div className="rounded-[2rem] border border-yellow-300/20 bg-[#070707]/95 p-8 shadow-[0_24px_80px_-50px_rgba(255,214,0,0.35)]">
+    <div className="rounded-[2rem] border border-yellow-300/20 bg-[#070707]/95 p-4 shadow-[0_24px_80px_-50px_rgba(255,214,0,0.35)] sm:p-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.35em] text-yellow-300/70">Create new order</p>
@@ -96,7 +96,7 @@ export default function AdminCreateOrderCard({
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-slate-300">Order items</p>
             <select
               onChange={(event) => {

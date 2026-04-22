@@ -8,8 +8,8 @@ interface Props {
 export default function AdminPreviewPanel({ menuItems, uploads }: Props) {
   return (
     <div className="space-y-6">
-      <div className="rounded-[2rem] border border-yellow-300/20 bg-[#070707]/95 p-8 shadow-[0_24px_80px_-50px_rgba(255,214,0,0.35)]">
-        <div className="flex items-center justify-between gap-4">
+      <div className="rounded-[2rem] border border-yellow-300/20 bg-[#070707]/95 p-4 shadow-[0_24px_80px_-50px_rgba(255,214,0,0.35)] sm:p-8">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.35em] text-yellow-300/70">Latest uploads</p>
             <h2 className="mt-3 text-2xl font-semibold text-white">Media preview</h2>
@@ -45,8 +45,8 @@ export default function AdminPreviewPanel({ menuItems, uploads }: Props) {
         </div>
       </div>
 
-      <div className="rounded-[2rem] border border-yellow-300/20 bg-[#070707]/95 p-8 shadow-[0_24px_80px_-50px_rgba(255,214,0,0.35)]">
-        <div className="flex items-center justify-between gap-4">
+      <div className="rounded-[2rem] border border-yellow-300/20 bg-[#070707]/95 p-4 shadow-[0_24px_80px_-50px_rgba(255,214,0,0.35)] sm:p-8">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.35em] text-yellow-300/70">Recent menu items</p>
             <h2 className="mt-3 text-2xl font-semibold text-white">Dish catalogue</h2>
@@ -64,7 +64,7 @@ export default function AdminPreviewPanel({ menuItems, uploads }: Props) {
           ) : (
             menuItems.slice(0, 6).map((item) => (
               <div key={item.id} className="rounded-3xl border border-yellow-300/20 bg-[#0b0b0b]/90 p-4 transition hover:-translate-y-1 hover:border-yellow-300/40">
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <p className="font-semibold text-white">{item.name}</p>
                   <p className="rounded-full bg-yellow-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-yellow-200">
                     ${item.price.toFixed(2)}

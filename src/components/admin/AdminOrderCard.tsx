@@ -43,8 +43,8 @@ export default function AdminOrderCard({ orders, loading, onStatusChange }: Prop
   };
 
   return (
-    <div className="rounded-[2rem] border border-yellow-300/20 bg-[#070707]/95 p-8 shadow-[0_24px_80px_-50px_rgba(255,214,0,0.35)]">
-      <div className="flex items-center justify-between gap-4">
+    <div className="rounded-[2rem] border border-yellow-300/20 bg-[#070707]/95 p-4 shadow-[0_24px_80px_-50px_rgba(255,214,0,0.35)] sm:p-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.35em] text-yellow-300/70">Order management</p>
           <h2 className="mt-3 text-2xl font-semibold text-white">Orders queue</h2>

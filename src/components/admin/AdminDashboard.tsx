@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import type { MenuItem, UploadImage } from "./types";
+import { DEFAULT_MENU_CATEGORY, MENU_TAXONOMY, getSubcategoryOptions } from "@/lib/menuTaxonomy";
 
 interface Order {
   id: number;
@@ -35,6 +36,10 @@ interface OrderForm {
 
 type ActiveTab = 'dashboard' | 'orders' | 'menu' | 'media' | 'admin';
 
+type DeleteTarget =
+  | { type: 'menu'; id: number; label: string }
+  | { type: 'upload'; publicId: string; label: string };
+
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -44,7 +49,8 @@ export default function AdminDashboard() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [menuForm, setMenuForm] = useState({
     name: "",
-    category: "main",
+    category: DEFAULT_MENU_CATEGORY,
+    subcategory: "",
     price: "",
     description: "",
   });
@@ -59,6 +65,7 @@ export default function AdminDashboard() {
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
+  const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
 
   useEffect(() => {
     void loadMenu();
@@ -163,29 +170,32 @@ export default function AdminDashboard() {
     setMessage(null);
 
     try {
+      if (!menuImageFile) {
+        setMessage("Please select an image before adding a menu item.");
+        return;
+      }
+
       let imageUrl = "";
 
-      if (menuImageFile) {
-        const formData = new FormData();
-        formData.append("file", menuImageFile);
+      const formData = new FormData();
+      formData.append("file", menuImageFile);
 
-        const uploadRes = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
+      const uploadRes = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-        if (uploadRes.ok) {
-          const uploadPayload = await uploadRes.json();
-          imageUrl = uploadPayload.data?.secure_url || "";
-          
-          if (!imageUrl) {
-            setMessage("Failed to get image URL from upload.");
-            return;
-          }
-        } else {
-          setMessage("Failed to upload image.");
+      if (uploadRes.ok) {
+        const uploadPayload = await uploadRes.json();
+        imageUrl = uploadPayload.data?.secure_url || "";
+
+        if (!imageUrl) {
+          setMessage("Failed to get image URL from upload.");
           return;
         }
+      } else {
+        setMessage("Failed to upload image.");
+        return;
       }
 
       const res = await fetch("/api/menu", {
@@ -196,6 +206,7 @@ export default function AdminDashboard() {
           price: Number(menuForm.price),
           imageUrl,
           category: menuForm.category,
+          subcategory: menuForm.subcategory,
           description: menuForm.description,
         }),
       });
@@ -203,7 +214,13 @@ export default function AdminDashboard() {
       const payload = await res.json();
       if (res.ok) {
         setMessage("Menu item added successfully.");
-        setMenuForm({ name: "", category: "main", price: "", description: "" });
+        setMenuForm({
+          name: "",
+          category: DEFAULT_MENU_CATEGORY,
+          subcategory: "",
+          price: "",
+          description: "",
+        });
         setMenuImageFile(null);
         await loadMenu();
       } else {
@@ -319,6 +336,74 @@ export default function AdminDashboard() {
     toggleModal('orderModal');
   };
 
+  const closeDeleteDialog = () => {
+    setDeleteTarget(null);
+  };
+
+  const openMenuDeleteDialog = (item: MenuItem) => {
+    setDeleteTarget({
+      type: 'menu',
+      id: item.id,
+      label: item.name,
+    });
+  };
+
+  const openUploadDeleteDialog = (upload: UploadImage) => {
+    setDeleteTarget({
+      type: 'upload',
+      publicId: upload.public_id,
+      label: upload.public_id,
+    });
+  };
+
+  async function handleConfirmDelete() {
+    if (!deleteTarget) return;
+
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      if (deleteTarget.type === 'menu') {
+        const res = await fetch(`/api/menu/${deleteTarget.id}`, {
+          method: 'DELETE',
+        });
+
+        const payload = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          setMessage(payload.error ?? 'Unable to delete menu item.');
+          return;
+        }
+
+        setMessage('Menu item deleted successfully.');
+        await loadMenu();
+      } else {
+        const res = await fetch('/api/upload', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ publicId: deleteTarget.publicId }),
+        });
+
+        const payload = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          setMessage(payload.error ?? 'Unable to delete image.');
+          return;
+        }
+
+        setMessage('Image deleted successfully.');
+        await loadUploads();
+      }
+
+      closeDeleteDialog();
+    } catch (error) {
+      console.error('Delete error', error);
+      setMessage('Server error while deleting.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'COMPLETED': return '#00FF66';
@@ -330,18 +415,18 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#121212', color: '#FFFFFF' }}>
+    <div className="min-h-screen bg-[#121212] text-white md:flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-gray-900 border-r border-gray-700 flex flex-col p-6 fixed h-full z-10">
-        <div className="logo flex items-center gap-2.5 mb-12 text-xl font-bold text-yellow-400 uppercase tracking-wider">
+      <aside className="w-full border-b border-gray-700 bg-gray-900 p-4 md:fixed md:inset-y-0 md:w-64 md:border-b-0 md:border-r md:p-6">
+        <div className="logo mb-4 flex items-center gap-2.5 text-xl font-bold uppercase tracking-wider text-yellow-400 md:mb-12">
         <img src="/logo.png" alt="Logo" width="200" height="100" />
         </div>
         <nav>
-          <ul className="space-y-3">
+          <ul className="flex gap-2 overflow-x-auto pb-2 md:block md:space-y-3 md:overflow-visible md:pb-0">
             <li>
               <button
                 onClick={() => setActiveTab('dashboard')}
-                className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium ${
+                className={`flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium transition-all duration-300 md:min-w-0 ${
                   activeTab === 'dashboard'
                     ? 'bg-yellow-400 text-gray-900'
                     : 'text-white hover:bg-yellow-400 hover:text-gray-900'
@@ -359,7 +444,7 @@ export default function AdminDashboard() {
             <li>
               <button
                 onClick={() => setActiveTab('orders')}
-                className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium ${
+                className={`flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium transition-all duration-300 md:min-w-0 ${
                   activeTab === 'orders'
                     ? 'bg-yellow-400 text-gray-900'
                     : 'text-white hover:bg-yellow-400 hover:text-gray-900'
@@ -379,7 +464,7 @@ export default function AdminDashboard() {
             <li>
               <button
                 onClick={() => setActiveTab('menu')}
-                className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium ${
+                className={`flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium transition-all duration-300 md:min-w-0 ${
                   activeTab === 'menu'
                     ? 'bg-yellow-400 text-gray-900'
                     : 'text-white hover:bg-yellow-400 hover:text-gray-900'
@@ -397,7 +482,7 @@ export default function AdminDashboard() {
             <li>
               <button
                 onClick={() => setActiveTab('media')}
-                className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium ${
+                className={`flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium transition-all duration-300 md:min-w-0 ${
                   activeTab === 'media'
                     ? 'bg-yellow-400 text-gray-900'
                     : 'text-white hover:bg-yellow-400 hover:text-gray-900'
@@ -414,7 +499,7 @@ export default function AdminDashboard() {
             <li>
               <button
                 onClick={handleLogout}
-                className="w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium text-white hover:bg-yellow-400 hover:text-gray-900"
+                className="flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium text-white transition-all duration-300 hover:bg-yellow-400 hover:text-gray-900 md:min-w-0"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
@@ -427,19 +512,19 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="ml-64 flex-1 p-10">
+      <main className="flex-1 p-4 sm:p-6 lg:p-10 md:ml-64">
         {/* Dashboard Tab */}
         {activeTab === 'dashboard' && (
           <>
-            <div className="flex justify-between items-center mb-12">
+            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h1 className="text-4xl font-bold mb-2">System Analytics</h1>
+                <h1 className="mb-2 text-3xl font-bold sm:text-4xl">System Analytics</h1>
                 <p className="text-gray-400">Live data monitoring & menu control</p>
               </div>
-              <div className="flex gap-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <button
                   onClick={() => toggleModal('menuModal')}
-                  className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-yellow-300 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                  className="flex items-center justify-center gap-2 rounded-lg bg-yellow-400 px-4 py-3 font-bold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-300 hover:shadow-lg"
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -450,7 +535,7 @@ export default function AdminDashboard() {
                 </button>
                 <button
                   onClick={() => toggleModal('uploadModal')}
-                  className="bg-gray-800 text-yellow-400 border border-yellow-400 px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-yellow-400 hover:text-black transition-all duration-300"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-yellow-400 bg-gray-800 px-4 py-3 font-bold text-yellow-400 transition-all duration-300 hover:bg-yellow-400 hover:text-black"
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
@@ -465,7 +550,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-4 gap-6 mb-12">
+            <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
               <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-yellow-400 hover:transform hover:-translate-y-1 transition-all duration-300">
                 <span className="text-gray-400 text-sm">Total Items</span>
                 <h2 className="text-3xl font-bold mt-2">{menuItems.length}</h2>
@@ -577,18 +662,18 @@ export default function AdminDashboard() {
         {/* Orders Tab */}
         {activeTab === 'orders' && (
           <div>
-            <div className="flex justify-between items-center mb-12">
+            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h1 className="text-4xl font-bold mb-2">Order Management</h1>
+                <h1 className="mb-2 text-3xl font-bold sm:text-4xl">Order Management</h1>
                 <p className="text-gray-400">Manage customer orders and track fulfillment</p>
               </div>
             </div>
 
             <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:shadow-2xl hover:shadow-yellow-400/10 transition-all duration-300">
-              <div className="flex justify-between items-center mb-4">
+              <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h3 className="text-xl font-bold">All Orders</h3>
                 <div className="flex gap-2">
-                  <select className="bg-gray-700 text-white px-3 py-2 rounded-lg border border-gray-600">
+                  <select className="w-full rounded-lg border border-gray-600 bg-gray-700 px-3 py-2 text-white sm:w-auto">
                     <option>All Status</option>
                     <option>RECEIVED</option>
                     <option>PENDING</option>
@@ -662,14 +747,14 @@ export default function AdminDashboard() {
         {/* Menu Management Tab */}
         {activeTab === 'menu' && (
           <div>
-            <div className="flex justify-between items-center mb-12">
+            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h1 className="text-4xl font-bold mb-2">Menu Management</h1>
+                <h1 className="mb-2 text-3xl font-bold sm:text-4xl">Menu Management</h1>
                 <p className="text-gray-400">Create, edit, and organize your menu items</p>
               </div>
               <button
                 onClick={() => toggleModal('menuModal')}
-                className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-yellow-300 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                className="flex items-center justify-center gap-2 rounded-lg bg-yellow-400 px-4 py-3 font-bold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-300 hover:shadow-lg"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10"></circle>
@@ -683,10 +768,13 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {menuItems.map((item) => (
                 <div key={item.id} className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-yellow-400 transition-all duration-300 hover:transform hover:-translate-y-1">
-                  <div className="flex justify-between items-start mb-4">
+                  <div className="mb-4 flex items-start justify-between gap-3">
                     <div className="flex-1">
                       <h3 className="text-lg font-bold text-white mb-1">{item.name}</h3>
-                      <p className="text-gray-400 text-sm mb-2">{item.category}</p>
+                      <p className="text-gray-400 text-sm mb-2">
+                        {item.category}
+                        {item.subcategory ? ` / ${item.subcategory}` : ""}
+                      </p>
                       <p className="text-yellow-400 font-semibold">${item.price.toFixed(2)}</p>
                     </div>
                     {item.imageUrl && (
@@ -713,7 +801,10 @@ export default function AdminDashboard() {
                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                         </svg>
                       </button>
-                      <button className="text-gray-400 hover:text-red-400 transition-colors">
+                      <button
+                        onClick={() => openMenuDeleteDialog(item)}
+                        className="text-gray-400 hover:text-red-400 transition-colors"
+                      >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M3 6h18"></path>
                           <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
@@ -743,14 +834,14 @@ export default function AdminDashboard() {
         {/* Media Library Tab */}
         {activeTab === 'media' && (
           <div>
-            <div className="flex justify-between items-center mb-12">
+            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h1 className="text-4xl font-bold mb-2">Media Library</h1>
+                <h1 className="mb-2 text-3xl font-bold sm:text-4xl">Media Library</h1>
                 <p className="text-gray-400">Manage your uploaded images and media files</p>
               </div>
               <button
                 onClick={() => toggleModal('uploadModal')}
-                className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-yellow-300 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                className="flex items-center justify-center gap-2 rounded-lg bg-yellow-400 px-4 py-3 font-bold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-300 hover:shadow-lg"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
@@ -764,7 +855,7 @@ export default function AdminDashboard() {
             </div>
 
             <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:shadow-2xl hover:shadow-yellow-400/10 transition-all duration-300">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
                 {uploads.map((upload) => (
                   <div key={upload.asset_id} className="bg-gray-700 rounded-lg overflow-hidden border border-gray-600 hover:border-yellow-400 transition-all duration-300 hover:transform hover:scale-105">
                     <img
@@ -781,7 +872,10 @@ export default function AdminDashboard() {
                       </div>
                       <div className="flex justify-between items-center mt-2">
                         <span className="text-xs text-gray-400 uppercase">{upload.format}</span>
-                        <button className="text-gray-400 hover:text-red-400 transition-colors">
+                        <button
+                          onClick={() => openUploadDeleteDialog(upload)}
+                          className="text-gray-400 hover:text-red-400 transition-colors"
+                        >
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M3 6h18"></path>
                             <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
@@ -811,9 +905,9 @@ export default function AdminDashboard() {
         {/* Admin Access Tab */}
         {activeTab === 'admin' && (
           <div>
-            <div className="flex justify-between items-center mb-12">
+            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h1 className="text-4xl font-bold mb-2">Admin Access</h1>
+                <h1 className="mb-2 text-3xl font-bold sm:text-4xl">Admin Access</h1>
                 <p className="text-gray-400">Manage administrative settings and permissions</p>
               </div>
             </div>
@@ -889,10 +983,12 @@ export default function AdminDashboard() {
       >
         <div className="modal-content" style={{
           background: '#1E1E1E',
-          width: '500px',
+          width: 'min(500px, calc(100vw - 2rem))',
+          maxHeight: 'calc(100vh - 2rem)',
+          overflowY: 'auto',
           borderRadius: '20px',
           border: '1px solid #FFD700',
-          padding: '2rem',
+          padding: 'clamp(1rem, 3vw, 2rem)',
           position: 'relative',
           animation: 'modalSlide 0.3s ease-out'
         }}>
@@ -952,7 +1048,13 @@ export default function AdminDashboard() {
               }}>Category</label>
               <select
                 value={menuForm.category}
-                onChange={(e) => setMenuForm(prev => ({ ...prev, category: e.target.value }))}
+                onChange={(e) =>
+                  setMenuForm((prev) => ({
+                    ...prev,
+                    category: e.target.value,
+                    subcategory: "",
+                  }))
+                }
                 style={{
                   width: '100%',
                   padding: '0.8rem',
@@ -963,10 +1065,41 @@ export default function AdminDashboard() {
                   outline: 'none'
                 }}
               >
-                <option value="beverages">Beverages</option>
-                <option value="main">Main Course</option>
-                <option value="desserts">Desserts</option>
+                {MENU_TAXONOMY.map((category) => (
+                  <option key={category.value} value={category.value}>
+                    {category.label}
+                  </option>
+                ))}
               </select>
+            </div>
+            <div className="form-group" style={{ marginBottom: '1.2rem' }}>
+              <label style={{
+                display: 'block',
+                marginBottom: '0.5rem',
+                color: '#FFD700',
+                fontSize: '0.9rem'
+              }}>Subcategory (optional)</label>
+              <input
+                type="text"
+                value={menuForm.subcategory}
+                onChange={(e) => setMenuForm(prev => ({ ...prev, subcategory: e.target.value }))}
+                list="menu-subcategory-options"
+                placeholder="e.g. Breakfast, Dirty Sodas"
+                style={{
+                  width: '100%',
+                  padding: '0.8rem',
+                  background: '#252525',
+                  border: '1px solid #2A2A2A',
+                  borderRadius: '8px',
+                  color: 'white',
+                  outline: 'none'
+                }}
+              />
+              <datalist id="menu-subcategory-options">
+                {getSubcategoryOptions(menuForm.category).map((subcategory) => (
+                  <option key={subcategory} value={subcategory} />
+                ))}
+              </datalist>
             </div>
             <div className="form-group" style={{ marginBottom: '1.2rem' }}>
               <label style={{
@@ -1026,6 +1159,7 @@ export default function AdminDashboard() {
                 type="file"
                 accept="image/*"
                 onChange={handleMenuFileChange}
+                required
                 style={{
                   width: '100%',
                   padding: '0.8rem',
@@ -1086,10 +1220,12 @@ export default function AdminDashboard() {
       >
         <div className="modal-content" style={{
           background: '#1E1E1E',
-          width: '500px',
+          width: 'min(500px, calc(100vw - 2rem))',
+          maxHeight: 'calc(100vh - 2rem)',
+          overflowY: 'auto',
           borderRadius: '20px',
           border: '1px solid #FFD700',
-          padding: '2rem',
+          padding: 'clamp(1rem, 3vw, 2rem)',
           position: 'relative',
           animation: 'modalSlide 0.3s ease-out'
         }}>
@@ -1165,6 +1301,64 @@ export default function AdminDashboard() {
         </div>
       </div>
 
+      {/* Delete Confirmation Modal */}
+      <div
+        className="modal-overlay"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'rgba(0,0,0,0.85)',
+          backdropFilter: 'blur(5px)',
+          display: deleteTarget ? 'flex' : 'none',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1100,
+        }}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) closeDeleteDialog();
+        }}
+      >
+        <div
+          className="modal-content"
+          style={{
+            background: '#1E1E1E',
+            width: 'min(460px, calc(100vw - 2rem))',
+            borderRadius: '20px',
+            border: '1px solid #FFD700',
+            padding: 'clamp(1rem, 3vw, 1.5rem)',
+            animation: 'modalSlide 0.3s ease-out',
+          }}
+        >
+          <h2 style={{ marginBottom: '0.8rem', color: '#FFD700' }}>Confirm Deletion</h2>
+          <p style={{ color: '#D1D5DB', marginBottom: '1.2rem', lineHeight: 1.6 }}>
+            {deleteTarget?.type === 'menu'
+              ? `Delete menu item \"${deleteTarget.label}\"? This action cannot be undone.`
+              : `Delete image \"${deleteTarget?.label}\"? This action cannot be undone.`}
+          </p>
+
+          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+            <button
+              type="button"
+              onClick={closeDeleteDialog}
+              className="rounded-lg border border-gray-600 px-4 py-2 text-gray-200 transition-colors hover:bg-gray-700"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleConfirmDelete}
+              disabled={loading}
+              className="rounded-lg bg-red-600 px-4 py-2 font-semibold text-white transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading ? 'Deleting...' : 'Delete'}
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Order Modal */}
       {selectedOrder && (
         <div
@@ -1189,10 +1383,12 @@ export default function AdminDashboard() {
         >
           <div className="modal-content" style={{
             background: '#1E1E1E',
-            width: '500px',
+            width: 'min(500px, calc(100vw - 2rem))',
+            maxHeight: 'calc(100vh - 2rem)',
+            overflowY: 'auto',
             borderRadius: '20px',
             border: '1px solid #FFD700',
-            padding: '2rem',
+            padding: 'clamp(1rem, 3vw, 2rem)',
             position: 'relative',
             animation: 'modalSlide 0.3s ease-out'
           }}>
@@ -1293,15 +1489,17 @@ export default function AdminDashboard() {
       {message && (
         <div style={{
           position: 'fixed',
-          top: '20px',
-          right: '20px',
+          top: '16px',
+          right: '16px',
+          left: '16px',
           background: 'var(--brand-dark)',
           border: '1px solid var(--brand-yellow)',
           borderRadius: '8px',
           padding: '1rem',
           color: 'var(--brand-yellow)',
           zIndex: 1001,
-          maxWidth: '400px',
+          maxWidth: '420px',
+          width: 'auto',
           boxShadow: '0 4px 15px rgba(255, 215, 0, 0.2)'
         }}>
           {message}

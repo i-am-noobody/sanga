@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 
 interface OrderItem {
@@ -68,17 +69,17 @@ export default function OrdersPage() {
 
   return (
     <main className="min-h-screen bg-black text-white font-poppins">
-      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(249,204,74,0.08),_transparent_35%)] px-6 py-24 sm:px-10">
+      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(249,204,74,0.08),_transparent_35%)] px-4 py-24 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-5xl">
           <div className="mb-12 text-center">
             <p className="text-sm uppercase tracking-[0.3em] text-yellow-400/80">Order Tracking</p>
             <h1 className="mt-4 text-4xl font-bold sm:text-5xl">See your orders and current status</h1>
             <p className="mt-4 text-gray-300 sm:text-lg">
-              Enter the email used when placing your order to view all your recent orders and their pickup details.
+              Enter the email address used when placing your order to view all your orders and their details. If you just placed an order, check your email for a direct link to view it immediately.
             </p>
           </div>
 
-          <form onSubmit={handleSearch} className="grid gap-4 rounded-3xl border border-white/10 bg-white/5 p-8 shadow-xl shadow-black/20 sm:grid-cols-[1.5fr_1fr]">
+          <form onSubmit={handleSearch} className="grid gap-4 rounded-3xl border border-white/10 bg-white/5 p-5 shadow-xl shadow-black/20 sm:grid-cols-[1.5fr_1fr] sm:p-8">
             <div className="space-y-4">
               <label className="block text-sm text-gray-300">
                 Email used for order
@@ -121,48 +122,48 @@ export default function OrdersPage() {
 
             {orders.length > 0 && (
               <div className="space-y-6">
+                <p className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-gray-300">
+                  Found {orders.length} order{orders.length === 1 ? "" : "s"}. Choose an order below to see full details.
+                </p>
                 {orders.map((order) => (
                   <article key={order.id} className="rounded-3xl border border-white/10 bg-slate-950/70 p-6 shadow-lg shadow-black/20">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                       <div>
                         <p className="text-sm text-gray-400">Order #{order.id}</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">{order.customerName}</h2>
-                        <p className="text-sm text-gray-400">Placed on {new Date(order.createdAt).toLocaleString()}</p>
+                        <h2 className="mt-1 text-2xl font-semibold text-white">{order.customerName}</h2>
+                        <p className="text-sm text-gray-400">Placed {new Date(order.createdAt).toLocaleString()}</p>
                       </div>
-                      <div className="space-y-2 text-right">
-                        <p className="text-sm text-gray-400">Pickup</p>
-                        <p className="text-base font-semibold text-white">{new Date(order.pickupTime).toLocaleString()}</p>
+                      <div className="space-y-2 sm:text-right">
+                        <p className="text-sm text-gray-400">Status</p>
                         <span className="inline-flex rounded-full border border-yellow-300/30 bg-yellow-400/10 px-3 py-1 text-sm font-semibold text-yellow-200">
                           {order.status}
                         </span>
                       </div>
                     </div>
 
-                    <div className="mt-6 grid gap-4 md:grid-cols-2">
+                    <div className="mt-6 grid gap-4 md:grid-cols-3">
                       <div className="rounded-3xl border border-white/10 bg-black/40 p-4">
-                        <p className="text-sm text-gray-400">Contact</p>
-                        {order.customerEmail ? <p className="text-sm text-white">{order.customerEmail}</p> : null}
-                        {order.customerPhone ? <p className="text-sm text-white">{order.customerPhone}</p> : null}
+                        <p className="text-sm text-gray-400">Pickup</p>
+                        <p className="text-sm text-white">{new Date(order.pickupTime).toLocaleString()}</p>
                       </div>
                       <div className="rounded-3xl border border-white/10 bg-black/40 p-4">
                         <p className="text-sm text-gray-400">Total</p>
                         <p className="text-xl font-semibold text-white">Rs {order.totalPrice.toFixed(2)}</p>
                       </div>
+                      <div className="rounded-3xl border border-white/10 bg-black/40 p-4">
+                        <p className="text-sm text-gray-400">Items</p>
+                        <p className="text-xl font-semibold text-white">{order.items.length}</p>
+                      </div>
                     </div>
 
-                    <div className="mt-6 rounded-3xl border border-white/10 bg-white/5 p-4">
-                      <p className="text-sm text-gray-400">Items</p>
-                      <div className="mt-4 space-y-3">
-                        {order.items.map((item) => (
-                          <div key={item.id} className="flex items-center justify-between rounded-3xl bg-slate-900/80 p-3">
-                            <div>
-                              <p className="font-medium text-white">{item.menuItem.name}</p>
-                              <p className="text-sm text-gray-400">Qty: {item.quantity}</p>
-                            </div>
-                            <p className="font-semibold text-white">Rs {(item.price).toFixed(2)}</p>
-                          </div>
-                        ))}
-                      </div>
+                    <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <p className="text-sm text-gray-300">Open full order details for line items and contact information.</p>
+                      <Link
+                        href={`/orders/${order.id}`}
+                        className="inline-flex items-center justify-center rounded-full border border-yellow-300/40 bg-yellow-300/10 px-6 py-3 text-sm font-semibold text-yellow-200 transition hover:bg-yellow-300/20"
+                      >
+                        View Order Details
+                      </Link>
                     </div>
                   </article>
                 ))}

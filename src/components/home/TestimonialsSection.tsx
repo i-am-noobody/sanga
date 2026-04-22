@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "framer-motion";
 
 const testimonials = [
@@ -9,7 +11,8 @@ const testimonials = [
 export default function TestimonialsSection() {
   return (
     <motion.section
-      className="py-24 px-6 text-center"
+      id="testimonials"
+      className="scroll-mt-24 py-24 px-6 text-center"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}

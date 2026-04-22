@@ -81,3 +81,38 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const user = await getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    if (user.role !== "admin") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    const body = await req.json().catch(() => ({}));
+    const publicId = typeof body?.publicId === "string" ? body.publicId.trim() : "";
+
+    if (!publicId) {
+      return NextResponse.json({ error: "publicId is required" }, { status: 400 });
+    }
+
+    const destroyResult = await cloudinary.uploader.destroy(publicId, {
+      resource_type: "image",
+      invalidate: true,
+    });
+
+    if (destroyResult.result !== "ok" && destroyResult.result !== "not found") {
+      return NextResponse.json({ error: "Failed to delete image" }, { status: 500 });
+    }
+
+    return NextResponse.json({ message: "Image deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Image delete failed" }, { status: 500 });
+  }
+}

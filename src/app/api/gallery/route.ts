@@ -11,6 +11,18 @@ interface CloudinaryResource {
 }
 
 export async function GET() {
+  const hasCloudinaryCredentials =
+    Boolean(process.env.CLOUDINARY_CLOUD_NAME) &&
+    Boolean(process.env.CLOUDINARY_API_KEY) &&
+    Boolean(process.env.CLOUDINARY_API_SECRET);
+
+  if (!hasCloudinaryCredentials) {
+    return NextResponse.json({
+      data: [],
+      error: "Gallery is temporarily unavailable",
+    });
+  }
+
   try {
     const result = await cloudinary.api.resources({
       type: "upload",
@@ -31,7 +43,10 @@ export async function GET() {
 
     return NextResponse.json({ data: images });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: "Failed to retrieve gallery images" }, { status: 500 });
+    console.error("GALLERY API ERROR:", error);
+    return NextResponse.json({
+      data: [],
+      error: "Failed to retrieve gallery images",
+    });
   }
 }
