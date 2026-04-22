@@ -24,8 +24,15 @@ export default function MenuSection({ onAddToCart }: MenuSectionProps) {
           throw new Error("Unable to fetch menu");
         }
 
-        const data = await res.json();
-        setMenuItems(Array.isArray(data) ? data : []);
+        const payload: unknown = await res.json();
+        const items =
+          Array.isArray(payload)
+            ? payload
+            : Array.isArray((payload as { data?: unknown })?.data)
+              ? ((payload as { data: MenuItem[] }).data ?? [])
+              : [];
+
+        setMenuItems(items);
         setError(null);
       } catch (error) {
         console.error("Failed to load menu:", error);

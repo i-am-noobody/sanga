@@ -25,6 +25,22 @@ function shouldRetryWithoutSubcategory(error: unknown): boolean {
   return isUnknownSubcategoryArgument(error) || isMissingSubcategoryColumn(error);
 }
 
+function isRecoverableMenuReadError(error: unknown): boolean {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  const message = error.message.toLowerCase();
+
+  return (
+    message.includes("p1001") ||
+    message.includes("p2021") ||
+    message.includes("can't reach database server") ||
+    message.includes("table") && message.includes("does not exist") ||
+    message.includes("relation") && message.includes("does not exist")
+  );
+}
+
 // ✅ GET all menu items (public)
 export async function GET() {
   try {
@@ -62,6 +78,14 @@ export async function GET() {
     return NextResponse.json(items);
   } catch (error) {
     console.error("GET MENU ERROR:", error);
+
+    if (isRecoverableMenuReadError(error)) {
+      return NextResponse.json({
+        data: [],
+        error: "Menu is temporarily unavailable",
+      });
+    }
+
     return NextResponse.json(
       { error: "Failed to fetch menu" },
       { status: 500 }
