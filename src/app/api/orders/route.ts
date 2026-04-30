@@ -3,6 +3,16 @@ import { NextResponse } from "next/server";
 import { getUser } from "../../lib/getUser";
 import { sendEmail } from "../../lib/email";
 
+const orderItemInclude = {
+  menuItem: {
+    select: {
+      id: true,
+      name: true,
+      price: true,
+    },
+  },
+} as const;
+
 // ✅ GET orders: admin can fetch all; customers can fetch by email (and optional phone)
 export async function GET(req: Request) {
   try {
@@ -18,9 +28,7 @@ export async function GET(req: Request) {
         where,
         include: {
           items: {
-            include: {
-              menuItem: true,
-            },
+            include: orderItemInclude,
           },
         },
         orderBy: { createdAt: "desc" },
@@ -41,9 +49,7 @@ export async function GET(req: Request) {
     const orders = await prisma.order.findMany({
       include: {
         items: {
-          include: {
-            menuItem: true,
-          },
+          include: orderItemInclude,
         },
       },
       orderBy: { createdAt: "desc" },
@@ -183,9 +189,7 @@ export async function POST(req: Request) {
       },
       include: {
         items: {
-          include: {
-            menuItem: true,
-          },
+          include: orderItemInclude,
         },
       },
     });

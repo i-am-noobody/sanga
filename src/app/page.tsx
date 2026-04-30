@@ -1,7 +1,8 @@
 ﻿'use client';
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useEffect } from "react";
 import type { CartItem, MenuItem } from "@/components/home/types";
 import Navbar from "@/components/home/Navbar";
 import HeroSection from "@/components/home/HeroSection";
@@ -12,15 +13,53 @@ import TestimonialsSection from "@/components/home/TestimonialsSection";
 import LocationSection from "@/components/home/LocationSection";
 import ContactSection from "@/components/home/ContactSection";
 import OrderModal from "@/components/home/OrderModal";
+import WelcomeBanner from "@/components/home/WelcomeBanner";
+
+function FacebookIcon({ className }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.099 4.388 23.094 10.125 24v-8.438h-3.04v-3.49h3.04V9.413c0-3.01 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.98h-1.513c-1.49 0-1.953.93-1.953 1.887v2.28h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.099 24 12.073z" />
+    </svg>
+  );
+}
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" className={className}>
+      <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="2" />
+      <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="2" />
+      <circle cx="17.3" cy="6.7" r="1.15" fill="currentColor" />
+    </svg>
+  );
+}
 
 export default function Home() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showBanner, setShowBanner] = useState(true);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [pickupTime, setPickupTime] = useState("");
+
+  const closeBanner = useCallback(() => {
+    setShowBanner(false);
+  }, []);
+
+  useEffect(() => {
+    if (!showBanner) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [showBanner]);
 
   const addToCart = (item: MenuItem) => {
     setCart((prev) => {
@@ -104,6 +143,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-white font-poppins scroll-smooth">
+      <WelcomeBanner
+        isVisible={showBanner}
+        onClose={closeBanner}
+      />
+      
       <Navbar
         cartCount={cart.length}
         onOrderClick={() => setIsModalOpen(true)}
@@ -129,44 +173,27 @@ export default function Home() {
             <p className="text-gray-400">Best sandwiches in town</p>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-yellow-400 mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li>
-                <a href="#about" className="hover:text-white transition-colors">
-                  About
-                </a>
-              </li>
-              <li>
-                <a href="#menu" className="hover:text-white transition-colors">
-                  Menu
-                </a>
-              </li>
-              <li>
-                <a href="#gallery" className="hover:text-white transition-colors">
-                  Gallery
-                </a>
-              </li>
-              <li>
-                <a href="#testimonials" className="hover:text-white transition-colors">
-                  Reviews
-                </a>
-              </li>
-              <li>
-                <a href="#location" className="hover:text-white transition-colors">
-                  Location
-                </a>
-              </li>
-              <li>
-                <a href="#contact" className="hover:text-white transition-colors">
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a href="/orders" className="hover:text-white transition-colors">
-                  My Orders
-                </a>
-              </li>
-            </ul>
+            <h4 className="text-lg font-semibold text-yellow-400 mb-4">Follow Us</h4>
+            <div className="flex gap-6">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="group rounded-full border border-white/10 bg-white/5 p-3 text-gray-400 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#ffd43b]/40 hover:bg-[#ffd43b]/10 hover:text-[#ffd43b]"
+              >
+                <FacebookIcon className="h-7 w-7" />
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="group rounded-full border border-white/10 bg-white/5 p-3 text-gray-400 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#ffd43b]/40 hover:bg-[#ffd43b]/10 hover:text-[#ffd43b]"
+              >
+                <InstagramIcon className="h-7 w-7" />
+              </a>
+            </div>
           </div>
           <div>
             <h4 className="text-lg font-semibold text-yellow-400 mb-4">Contact</h4>

@@ -26,6 +26,15 @@ interface Order {
   }[];
 }
 
+interface ContactMessage {
+  id: number;
+  name: string;
+  email: string;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
+}
+
 interface OrderForm {
   customerName: string;
   customerEmail: string;
@@ -34,7 +43,7 @@ interface OrderForm {
   items: { menuItemId: number; quantity: number }[];
 }
 
-type ActiveTab = 'dashboard' | 'orders' | 'menu' | 'media' | 'admin';
+type ActiveTab = 'dashboard' | 'orders' | 'menu' | 'messages' | 'media' | 'admin';
 
 type DeleteTarget =
   | { type: 'menu'; id: number; label: string }
@@ -46,6 +55,7 @@ export default function AdminDashboard() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [uploads, setUploads] = useState<UploadImage[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [menuForm, setMenuForm] = useState({
     name: "",
@@ -64,14 +74,25 @@ export default function AdminDashboard() {
   });
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
+  const [pendingOrderStatus, setPendingOrderStatus] = useState<Order["status"] | null>(null);
+  const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
 
   useEffect(() => {
     void loadMenu();
     void loadUploads();
     void loadOrders();
+    void loadContactMessages();
   }, []);
+
+  function handleUnauthorized(response: Response) {
+    if (response.status === 401) {
+      window.location.href = "/login";
+      return true;
+    }
+
+    return false;
+  }
 
   async function loadMenu() {
     try {
@@ -88,6 +109,7 @@ export default function AdminDashboard() {
   async function loadUploads() {
     try {
       const res = await fetch("/api/upload", { method: "GET" });
+      if (handleUnauthorized(res)) return;
       if (res.ok) {
         const payload = await res.json();
         setUploads(payload.data ?? []);
@@ -100,6 +122,7 @@ export default function AdminDashboard() {
   async function loadOrders() {
     try {
       const res = await fetch("/api/orders", { cache: "no-store" });
+      if (handleUnauthorized(res)) return;
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) {
@@ -108,6 +131,25 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error("Unable to load orders", error);
+    }
+  }
+
+  async function loadContactMessages() {
+    try {
+      const res = await fetch("/api/contact", { cache: "no-store" });
+      if (handleUnauthorized(res)) return;
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setContactMessages(data);
+        }
+      } else {
+        const payload = await res.json().catch(() => ({}));
+        setMessage(payload.error ?? "Unable to load contact messages.");
+      }
+    } catch (error) {
+      console.error("Unable to load contact messages", error);
+      setMessage("Unable to load contact messages. Please try again.");
     }
   }
 
@@ -282,13 +324,17 @@ export default function AdminDashboard() {
       if (res.ok) {
         setMessage(`Order status updated to ${status}.`);
         await loadOrders();
+        setSelectedOrder((prev) => (prev ? { ...prev, status } : prev));
+        return true;
       } else {
         const payload = await res.json();
         setMessage(payload.error ?? "Unable to update order status.");
+        return false;
       }
     } catch (error) {
       console.error("Order status update error", error);
       setMessage("Server error while updating order status.");
+      return false;
     } finally {
       setLoading(false);
     }
@@ -333,8 +379,30 @@ export default function AdminDashboard() {
 
   const handleOrderClick = (order: Order) => {
     setSelectedOrder(order);
-    toggleModal('orderModal');
+    setPendingOrderStatus(order.status);
+    setActiveModal('orderModal');
   };
+
+  const closeOrderModal = () => {
+    setActiveModal(null);
+    setSelectedOrder(null);
+    setPendingOrderStatus(null);
+  };
+
+  async function handleConfirmOrderStatusChange() {
+    if (!selectedOrder || !pendingOrderStatus) return;
+
+    if (pendingOrderStatus === selectedOrder.status) {
+      closeOrderModal();
+      return;
+    }
+
+    const ok = await handleOrderStatusUpdate(selectedOrder.id, pendingOrderStatus);
+
+    if (ok) {
+      closeOrderModal();
+    }
+  }
 
   const closeDeleteDialog = () => {
     setDeleteTarget(null);
@@ -417,11 +485,11 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-[#121212] text-white md:flex">
       {/* Sidebar */}
-      <aside className="w-full border-b border-gray-700 bg-gray-900 p-4 md:fixed md:inset-y-0 md:w-64 md:border-b-0 md:border-r md:p-6">
+      <aside className="w-full border-b border-gray-700 bg-gray-900 p-4 md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col md:border-b-0 md:border-r md:p-6">
         <div className="logo mb-4 flex items-center gap-2.5 text-xl font-bold uppercase tracking-wider text-yellow-400 md:mb-12">
         <img src="/logo.png" alt="Logo" width="200" height="100" />
         </div>
-        <nav>
+        <nav className="md:flex-1">
           <ul className="flex gap-2 overflow-x-auto pb-2 md:block md:space-y-3 md:overflow-visible md:pb-0">
             <li>
               <button
@@ -498,17 +566,49 @@ export default function AdminDashboard() {
             </li>
             <li>
               <button
-                onClick={handleLogout}
-                className="flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium text-white transition-all duration-300 hover:bg-yellow-400 hover:text-gray-900 md:min-w-0"
+                onClick={() => setActiveTab('messages')}
+                className={`flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium transition-all duration-300 md:min-w-0 ${
+                  activeTab === 'messages'
+                    ? 'bg-yellow-400 text-gray-900'
+                    : 'text-white hover:bg-yellow-400 hover:text-gray-900'
+                }`}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                Messages
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => setActiveTab('admin')}
+                className={`flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium transition-all duration-300 md:min-w-0 ${
+                  activeTab === 'admin'
+                    ? 'bg-yellow-400 text-gray-900'
+                    : 'text-white hover:bg-yellow-400 hover:text-gray-900'
+                }`}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
                 </svg>
-                {loading ? "Logging out..." : "Logout"}
+                Admin
               </button>
             </li>
           </ul>
         </nav>
+        <div className="mt-3 border-t border-gray-700 pt-3">
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left font-medium text-white transition-all duration-300 hover:bg-yellow-400 hover:text-gray-900"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M10 17l5-5-5-5"></path>
+              <path d="M15 12H3"></path>
+              <path d="M21 3v18"></path>
+            </svg>
+            {loading ? "Logging out..." : "Logout"}
+          </button>
+        </div>
       </aside>
 
       {/* Main Content */}
@@ -550,7 +650,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Stats Grid */}
-            <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
               <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-yellow-400 hover:transform hover:-translate-y-1 transition-all duration-300">
                 <span className="text-gray-400 text-sm">Total Items</span>
                 <h2 className="text-3xl font-bold mt-2">{menuItems.length}</h2>
@@ -564,11 +664,14 @@ export default function AdminDashboard() {
                 <h2 className="text-3xl font-bold mt-2">{uploads.length}</h2>
               </div>
               <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-yellow-400 hover:transform hover:-translate-y-1 transition-all duration-300">
+                <span className="text-gray-400 text-sm">Contact Messages</span>
+                <h2 className="text-3xl font-bold mt-2">{contactMessages.length}</h2>
+              </div>
+              <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-yellow-400 hover:transform hover:-translate-y-1 transition-all duration-300">
                 <span className="text-gray-400 text-sm">API Status</span>
                 <h2 className="text-3xl font-bold mt-2 text-green-400">Online</h2>
               </div>
             </div>
-
             {/* Orders Table */}
             <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:shadow-2xl hover:shadow-yellow-400/10 transition-all duration-300">
               <div className="flex justify-between items-center mb-4">
@@ -657,6 +760,60 @@ export default function AdminDashboard() {
               </div>
             </div>
           </>
+        )}
+
+        {/* Messages Tab */}
+        {activeTab === 'messages' && (
+          <div>
+            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h1 className="mb-2 text-3xl font-bold sm:text-4xl">Contact Messages</h1>
+                <p className="text-gray-400">Saved inquiries from the website contact form</p>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-gray-700 bg-gray-800 p-6 shadow-[0_16px_40px_rgba(15,23,42,0.24)]">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <h3 className="text-xl font-bold">Inbox</h3>
+                <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3 py-1 text-xs font-semibold text-yellow-300">
+                  Stored in ContactMessage
+                </span>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-gray-700">
+                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-yellow-400">Name</th>
+                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-yellow-400">Email</th>
+                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-yellow-400">Message</th>
+                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-yellow-400">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {contactMessages.slice(0, 25).map((entry) => (
+                      <tr key={entry.id} className={`border-b border-gray-700/70 ${entry.isRead ? 'bg-transparent' : 'bg-yellow-400/5'}`}>
+                        <td className="px-4 py-4 text-gray-200">{entry.name}</td>
+                        <td className="px-4 py-4 text-gray-300">{entry.email}</td>
+                        <td className="px-4 py-4 text-gray-300">
+                          <p className="max-w-2xl whitespace-pre-wrap leading-6">{entry.message}</p>
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-400">
+                          {new Date(entry.createdAt).toLocaleString()}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {contactMessages.length === 0 && (
+                <p className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6 text-center text-gray-400">
+                  No contact messages yet.
+                </p>
+              )}
+            </div>
+          </div>
         )}
 
         {/* Orders Tab */}
@@ -1378,7 +1535,7 @@ export default function AdminDashboard() {
             zIndex: 1000
           }}
           onClick={(e) => {
-            if (e.target === e.currentTarget) toggleModal('orderModal');
+              if (e.target === e.currentTarget) closeOrderModal();
           }}
         >
           <div className="modal-content" style={{
@@ -1408,7 +1565,7 @@ export default function AdminDashboard() {
                 cursor: 'pointer',
                 color: '#A0A0A0'
               }}
-              onClick={() => toggleModal('orderModal')}
+              onClick={closeOrderModal}
             >
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -1440,8 +1597,8 @@ export default function AdminDashboard() {
                 fontSize: '0.9rem'
               }}>Update Status</label>
               <select
-                value={selectedOrder.status}
-                onChange={(e) => handleOrderStatusUpdate(selectedOrder.id, e.target.value as Order['status'])}
+                value={pendingOrderStatus ?? selectedOrder.status}
+                onChange={(e) => setPendingOrderStatus(e.target.value as Order['status'])}
                 style={{
                   width: '100%',
                   padding: '0.8rem',
@@ -1459,28 +1616,53 @@ export default function AdminDashboard() {
                 <option value="CANCELLED">CANCELLED</option>
               </select>
             </div>
-            <button
-              type="button"
-              onClick={() => toggleModal('orderModal')}
-              className="btn-yellow"
-              style={{
-                width: '100%',
-                justifyContent: 'center',
-                background: '#FFD700',
-                color: '#121212',
-                border: 'none',
-                padding: '0.8rem 1.5rem',
-                borderRadius: '8px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-              }}
-            >
-              Close
-            </button>
+            <div style={{ display: 'flex', gap: '0.75rem' }}>
+              <button
+                type="button"
+                onClick={closeOrderModal}
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  background: '#252525',
+                  color: '#FFFFFF',
+                  border: '1px solid #2A2A2A',
+                  padding: '0.8rem 1.5rem',
+                  borderRadius: '8px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => void handleConfirmOrderStatusChange()}
+                disabled={loading}
+                className="btn-yellow"
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  background: '#FFD700',
+                  color: '#121212',
+                  border: 'none',
+                  padding: '0.8rem 1.5rem',
+                  borderRadius: '8px',
+                  fontWeight: 700,
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  opacity: loading ? 0.6 : 1
+                }}
+              >
+                {loading ? 'Updating...' : 'Confirm'}
+              </button>
+            </div>
           </div>
         </div>
       )}

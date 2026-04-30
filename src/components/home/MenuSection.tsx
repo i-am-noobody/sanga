@@ -126,21 +126,21 @@ export default function MenuSection({ onAddToCart }: MenuSectionProps) {
         ) : null}
       </div>
 
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto flex max-w-4xl flex-col gap-4 text-left">
         {loading ? (
-          <p className="col-span-full rounded-2xl border border-white/10 bg-white/5 p-8 text-slate-300/90">
+          <p className="rounded-2xl border border-white/10 bg-white/5 p-8 text-slate-300/90">
             Loading menu...
           </p>
         ) : error ? (
-          <p className="col-span-full rounded-2xl border border-rose-300/35 bg-rose-950/35 p-8 text-rose-100">
+          <p className="rounded-2xl border border-rose-300/35 bg-rose-950/35 p-8 text-rose-100">
             {error}
           </p>
         ) : menuItems.length === 0 ? (
-          <p className="col-span-full rounded-2xl border border-white/10 bg-white/5 p-8 text-slate-300/90">
+          <p className="rounded-2xl border border-white/10 bg-white/5 p-8 text-slate-300/90">
             No menu items available yet.
           </p>
         ) : filteredItems.length === 0 ? (
-          <p className="col-span-full rounded-2xl border border-white/10 bg-white/5 p-8 text-slate-300/90">
+          <p className="rounded-2xl border border-white/10 bg-white/5 p-8 text-slate-300/90">
             No items found in this category.
           </p>
         ) : (

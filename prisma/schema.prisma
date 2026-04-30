@@ -58,6 +58,15 @@ model OrderItem {
   menuItem  MenuItem @relation(fields: [menuItemId], references: [id])
 }
 
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
 enum OrderStatus {
   PENDING
   RECEIVED

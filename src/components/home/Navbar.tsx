@@ -19,26 +19,26 @@ export default function Navbar({ cartCount, onOrderClick }: NavbarProps) {
   ];
 
   return (
-    <nav className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/80 backdrop-blur-md">
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+    <nav className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/70 backdrop-blur-xl">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
         <a
           href="#top"
-          className="group inline-flex items-center rounded-lg px-2 py-1 transition duration-300 hover:bg-white/5"
+          className="group inline-flex items-center rounded-full px-2 py-1.5 transition duration-300 hover:bg-white/5"
           aria-label="Go to top"
         >
           <Image
             src="/logo.png"
             alt="Sanga logo"
-            width={130}
-            height={44}
-            className="h-11 w-auto transition duration-300 group-hover:scale-[1.03] group-hover:drop-shadow-[0_0_16px_rgba(253,224,71,0.45)]"
+            width={166}
+            height={56}
+            className="h-11 w-auto transition duration-300 sm:h-12 group-hover:scale-[1.03] group-hover:drop-shadow-[0_0_18px_rgba(253,224,71,0.45)]"
             priority
           />
         </a>
 
         <button
           type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/20 text-white transition hover:border-yellow-300/45 hover:text-yellow-200 md:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition hover:border-yellow-300/45 hover:bg-yellow-300/10 hover:text-yellow-200 md:hidden"
           onClick={() => setIsOpen((prev) => !prev)}
           aria-label="Toggle menu"
           aria-expanded={isOpen}
@@ -52,15 +52,15 @@ export default function Navbar({ cartCount, onOrderClick }: NavbarProps) {
           </div>
         </button>
 
-        <ul className="hidden list-none items-center gap-2 text-xs lg:gap-3 lg:text-sm md:flex">
+        <ul className="hidden list-none items-center gap-2 text-sm font-medium tracking-wide lg:gap-3 lg:text-base md:flex">
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
-                className="group relative inline-flex items-center rounded-full px-3 py-2 text-white/90 transition duration-300 hover:bg-white/8 hover:text-yellow-200"
+                className="group relative inline-flex items-center rounded-full px-4 py-2.5 text-white/85 transition duration-300 hover:bg-white/8 hover:text-[#ffd43b]"
               >
                 <span className="relative z-10">{link.label}</span>
-                <span className="absolute bottom-1 left-3 right-3 h-px origin-left scale-x-0 bg-yellow-300/90 transition-transform duration-300 group-hover:scale-x-100" />
+                <span className="absolute bottom-1.5 left-4 right-4 h-px origin-left scale-x-0 bg-[#ffd43b]/90 transition-transform duration-300 group-hover:scale-x-100" />
               </a>
             </li>
           ))}
@@ -68,7 +68,7 @@ export default function Navbar({ cartCount, onOrderClick }: NavbarProps) {
 
         <button
           type="button"
-          className="hidden rounded-full bg-yellow-300 px-5 py-2 font-semibold text-black transition-colors hover:bg-yellow-200 md:inline-flex"
+          className="hidden rounded-full bg-[#ffd43b] px-5 py-2.5 font-semibold text-black shadow-[0_10px_25px_rgba(255,212,59,0.18)] transition-all hover:translate-y-[-1px] hover:bg-[#ffe15b] md:inline-flex"
           onClick={onOrderClick}
         >
           Cart ({cartCount})
@@ -76,13 +76,13 @@ export default function Navbar({ cartCount, onOrderClick }: NavbarProps) {
       </div>
 
       {isOpen ? (
-        <div id="mobile-nav" className="border-t border-white/10 px-4 pb-4 pt-2 md:hidden">
-          <ul className="mb-4 space-y-3 text-sm">
+        <div id="mobile-nav" className="border-t border-white/10 bg-black/90 px-4 pb-4 pt-2 md:hidden">
+          <ul className="mb-4 space-y-3 text-base font-medium">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="group block rounded-lg border border-transparent px-3 py-2 text-white transition duration-300 hover:border-yellow-300/40 hover:bg-yellow-300/10 hover:text-yellow-200"
+                  className="group block rounded-xl border border-transparent px-3 py-2.5 text-white/90 transition duration-300 hover:border-[#ffd43b]/40 hover:bg-[#ffd43b]/10 hover:text-[#ffd43b]"
                   onClick={() => setIsOpen(false)}
                 >
                   <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
@@ -94,7 +94,7 @@ export default function Navbar({ cartCount, onOrderClick }: NavbarProps) {
           </ul>
           <button
             type="button"
-            className="w-full rounded-full bg-yellow-300 px-5 py-2 font-semibold text-black transition-colors hover:bg-yellow-200"
+            className="w-full rounded-full bg-[#ffd43b] px-5 py-2.5 font-semibold text-black transition-all hover:bg-[#ffe15b]"
             onClick={(event) => {
               onOrderClick(event);
               setIsOpen(false);

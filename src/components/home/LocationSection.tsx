@@ -5,11 +5,6 @@ import { motion } from "framer-motion";
 export default function LocationSection() {
   const address = "Shop1A-15 Skygate Centre, DFO Brisbane Airport";
   const encodedAddress = encodeURIComponent(address);
-  const quickNotes = [
-    "Easy parking at Skygate Centre",
-    "Convenient for airport visitors",
-    "One-tap navigation from any device",
-  ];
 
   return (
     <motion.section
@@ -71,16 +66,7 @@ export default function LocationSection() {
         </article>
       </div>
 
-      <div className="mx-auto mt-6 grid max-w-5xl gap-3 text-sm text-slate-300/85 sm:grid-cols-3">
-        {quickNotes.map((note) => (
-          <p
-            key={note}
-            className="rounded-xl border border-white/10 bg-white/5 p-4 text-center shadow-[0_6px_18px_rgba(2,6,23,0.22)]"
-          >
-            {note}
-          </p>
-        ))}
-      </div>
+     
     </motion.section>
   );
 }
