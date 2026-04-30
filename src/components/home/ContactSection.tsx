@@ -57,11 +57,12 @@ export default function ContactSection() {
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
     >
-      <div className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+      <div className="mx-auto grid max-w-5xl gap-6 item-center">
         <div className="rounded-3xl border border-white/10 bg-white/5 p-6 text-left shadow-[0_16px_40px_rgba(15,23,42,0.25)] backdrop-blur-sm sm:p-8">
           <h2 className="mb-3 text-3xl font-bold text-yellow-400 sm:text-4xl">Contact Us</h2>
           <p className="max-w-2xl text-sm leading-6 text-slate-300/80 sm:text-base">
-            Send us a message for catering, questions, or feedback. Every submission is saved securely in our database and appears in the admin inbox.
+            Send us a message for catering, questions, or feedback. 
+            We will review all messages and get back to you as soon as possible.
           </p>
 
           <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
@@ -101,24 +102,6 @@ export default function ContactSection() {
               </p>
             ) : null}
           </form>
-        </div>
-
-        <div className="space-y-4 text-left">
-          <div className="rounded-3xl border border-yellow-300/20 bg-gradient-to-b from-yellow-300/10 to-white/5 p-6 shadow-[0_16px_40px_rgba(15,23,42,0.22)]">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-yellow-300">Saved securely</p>
-            <h3 className="mt-2 text-xl font-semibold text-white">Where your message goes</h3>
-            <p className="mt-3 text-sm leading-6 text-slate-300/80">
-              Messages are stored in Postgres through Prisma in the ContactMessage table, so nothing is lost after you press send.
-            </p>
-          </div>
-
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-yellow-300">Admin view</p>
-            <h3 className="mt-2 text-xl font-semibold text-white">How the team reads replies</h3>
-            <p className="mt-3 text-sm leading-6 text-slate-300/80">
-              The admin can open the Dashboard and switch to the Messages tab to review every contact response in one place.
-            </p>
-          </div>
         </div>
       </div>
     </motion.section>
