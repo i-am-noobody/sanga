@@ -40,18 +40,18 @@ export default function TestimonialsSection() {
             "linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.95)), url('/logo.png')",
         }}
       />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,183,77,0.16),transparent_30%),radial-gradient(circle_at_bottom,rgba(255,183,77,0.09),transparent_25%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(218,41,28,0.16),transparent_30%),radial-gradient(circle_at_bottom,rgba(218,41,28,0.09),transparent_25%)]" />
 
       <div className="relative mx-auto max-w-6xl">
         <div className="mx-auto mb-12 max-w-2xl">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.5em] text-[#ffcc80]">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.5em] text-[#DA291C]">
             Customer Reviews
           </p>
           <h2 className="text-4xl font-black tracking-tight text-white sm:text-5xl">
             What people say about Sanga
           </h2>
           <p className="mt-4 text-sm leading-7 text-white/65 sm:text-base">
-            A black-themed testimonial wall inspired by premium review cards and built to fit the rest of the site.
+            We take pride in our food and service, but don't just take our word for it.
           </p>
         </div>
 
@@ -67,8 +67,8 @@ export default function TestimonialsSection() {
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-[url('https://randomuser.me/api/portraits/women/44.jpg')] bg-cover bg-center ring-2 ring-[#ffb74d]/70">
-                    <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#ff9800] text-[11px] font-black text-white shadow-md">
+                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-[url('https://randomuser.me/api/portraits/women/44.jpg')] bg-cover bg-center ring-2 ring-[#DA291C]/70">
+                    <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#DA291C] text-[11px] font-black text-white shadow-md">
                       ★
                     </span>
                   </div>
@@ -78,18 +78,18 @@ export default function TestimonialsSection() {
                   </div>
                 </div>
 
-                <div className="text-2xl font-black leading-none bg-gradient-to-r from-[#4285F4] via-[#DB4437] via-[#F4B400] to-[#0F9D58] bg-clip-text text-transparent">
+                <div className="text-2xl font-black leading-none bg-gradient-to-r from-[#DA291C] via-[#DA291C] to-[#DA291C] bg-clip-text text-transparent">
                   G
                 </div>
               </div>
 
               <div className="mt-5 flex items-center gap-2">
-                <div className="flex text-[#ffd54f] text-[18px] tracking-[2px]">
+                <div className="flex text-[#DA291C] text-[18px] tracking-[2px]">
                   {[...Array(5)].map((_, starIndex) => (
                     <span key={starIndex}>{starIndex < testimonial.rating ? "★" : "☆"}</span>
                   ))}
                 </div>
-                <span className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#1a73e8] text-[11px] font-bold text-white">
+                <span className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#DA291C] text-[11px] font-bold text-white">
                   ✓
                 </span>
               </div>

@@ -81,7 +81,7 @@ export default function MenuSection({ onAddToCart }: MenuSectionProps) {
       viewport={{ once: true }}
     >
       <div className="mx-auto mb-10 max-w-6xl">
-        <h2 className="mb-3 text-4xl font-bold text-yellow-300">Our Menu</h2>
+        <h2 className="mb-3 text-4xl font-bold text-[#DA291C]">Our Menu</h2>
         <p className="mx-auto mb-8 max-w-2xl text-sm text-slate-300/80 sm:text-base">
           Crafted daily and served fresh. Filter by category to quickly find what you are craving.
         </p>
@@ -97,8 +97,8 @@ export default function MenuSection({ onAddToCart }: MenuSectionProps) {
               }}
               className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-all sm:text-sm ${
                 activeCategory === category
-                  ? "border-yellow-300 bg-yellow-300 text-slate-950 shadow-[0_8px_18px_rgba(250,204,21,0.35)]"
-                  : "border-white/15 bg-white/5 text-slate-200 hover:border-yellow-300/45 hover:text-yellow-200"
+                  ? "border-red-300 bg-red-300 text-slate-950 shadow-[0_8px_18px_rgba(218,41,28,0.35)]"
+                  : "border-white/15 bg-white/5 text-slate-200 hover:border-red-300/45 hover:text-red-200"
               }`}
             >
               {category}
@@ -115,8 +115,8 @@ export default function MenuSection({ onAddToCart }: MenuSectionProps) {
                 onClick={() => setActiveSubcategory(subcategory)}
                 className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide transition-all sm:text-xs ${
                   activeSubcategory === subcategory
-                    ? "border-yellow-300/60 bg-yellow-300/20 text-yellow-100"
-                    : "border-white/15 bg-white/5 text-slate-300 hover:border-yellow-300/45 hover:text-yellow-200"
+                    ? "border-red-300/60 bg-red-300/20 text-red-100"
+                    : "border-white/15 bg-white/5 text-slate-300 hover:border-red-300/45 hover:text-red-200"
                 }`}
               >
                 {subcategory}

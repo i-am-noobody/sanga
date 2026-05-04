@@ -486,7 +486,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-[#121212] text-white md:flex">
       {/* Sidebar */}
       <aside className="w-full border-b border-gray-700 bg-gray-900 p-4 md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col md:border-b-0 md:border-r md:p-6">
-        <div className="logo mb-4 flex items-center gap-2.5 text-xl font-bold uppercase tracking-wider text-yellow-400 md:mb-12">
+        <div className="logo mb-4 flex items-center gap-2.5 text-xl font-bold uppercase tracking-wider text-red-400 md:mb-12">
         <img src="/logo.png" alt="Logo" width="200" height="100" />
         </div>
         <nav className="md:flex-1">
@@ -496,8 +496,8 @@ export default function AdminDashboard() {
                 onClick={() => setActiveTab('dashboard')}
                 className={`flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium transition-all duration-300 md:min-w-0 ${
                   activeTab === 'dashboard'
-                    ? 'bg-yellow-400 text-gray-900'
-                    : 'text-white hover:bg-yellow-400 hover:text-gray-900'
+                    ? 'bg-red-400 text-gray-900'
+                    : 'text-white hover:bg-red-400 hover:text-gray-900'
                 }`}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -514,8 +514,8 @@ export default function AdminDashboard() {
                 onClick={() => setActiveTab('orders')}
                 className={`flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium transition-all duration-300 md:min-w-0 ${
                   activeTab === 'orders'
-                    ? 'bg-yellow-400 text-gray-900'
-                    : 'text-white hover:bg-yellow-400 hover:text-gray-900'
+                    ? 'bg-red-400 text-gray-900'
+                    : 'text-white hover:bg-red-400 hover:text-gray-900'
                 }`}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -534,8 +534,8 @@ export default function AdminDashboard() {
                 onClick={() => setActiveTab('menu')}
                 className={`flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium transition-all duration-300 md:min-w-0 ${
                   activeTab === 'menu'
-                    ? 'bg-yellow-400 text-gray-900'
-                    : 'text-white hover:bg-yellow-400 hover:text-gray-900'
+                    ? 'bg-red-400 text-gray-900'
+                    : 'text-white hover:bg-red-400 hover:text-gray-900'
                 }`}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -552,8 +552,8 @@ export default function AdminDashboard() {
                 onClick={() => setActiveTab('media')}
                 className={`flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium transition-all duration-300 md:min-w-0 ${
                   activeTab === 'media'
-                    ? 'bg-yellow-400 text-gray-900'
-                    : 'text-white hover:bg-yellow-400 hover:text-gray-900'
+                    ? 'bg-red-400 text-gray-900'
+                    : 'text-white hover:bg-red-400 hover:text-gray-900'
                 }`}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -569,8 +569,8 @@ export default function AdminDashboard() {
                 onClick={() => setActiveTab('messages')}
                 className={`flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium transition-all duration-300 md:min-w-0 ${
                   activeTab === 'messages'
-                    ? 'bg-yellow-400 text-gray-900'
-                    : 'text-white hover:bg-yellow-400 hover:text-gray-900'
+                    ? 'bg-red-400 text-gray-900'
+                    : 'text-white hover:bg-red-400 hover:text-gray-900'
                 }`}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -584,8 +584,8 @@ export default function AdminDashboard() {
                 onClick={() => setActiveTab('admin')}
                 className={`flex w-full min-w-max items-center gap-3 rounded-xl px-4 py-3 text-left font-medium transition-all duration-300 md:min-w-0 ${
                   activeTab === 'admin'
-                    ? 'bg-yellow-400 text-gray-900'
-                    : 'text-white hover:bg-yellow-400 hover:text-gray-900'
+                    ? 'bg-red-400 text-gray-900'
+                    : 'text-white hover:bg-red-400 hover:text-gray-900'
                 }`}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -599,7 +599,7 @@ export default function AdminDashboard() {
         <div className="mt-3 border-t border-gray-700 pt-3">
           <button
             onClick={handleLogout}
-            className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left font-medium text-white transition-all duration-300 hover:bg-yellow-400 hover:text-gray-900"
+            className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left font-medium text-white transition-all duration-300 hover:bg-red-400 hover:text-gray-900"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M10 17l5-5-5-5"></path>
@@ -624,7 +624,7 @@ export default function AdminDashboard() {
               <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <button
                   onClick={() => toggleModal('menuModal')}
-                  className="flex items-center justify-center gap-2 rounded-lg bg-yellow-400 px-4 py-3 font-bold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-300 hover:shadow-lg"
+                  className="flex items-center justify-center gap-2 rounded-lg bg-red-400 px-4 py-3 font-bold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-300 hover:shadow-lg"
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -635,7 +635,7 @@ export default function AdminDashboard() {
                 </button>
                 <button
                   onClick={() => toggleModal('uploadModal')}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-yellow-400 bg-gray-800 px-4 py-3 font-bold text-yellow-400 transition-all duration-300 hover:bg-yellow-400 hover:text-black"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-red-400 bg-gray-800 px-4 py-3 font-bold text-red-400 transition-all duration-300 hover:bg-red-400 hover:text-black"
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
@@ -651,32 +651,32 @@ export default function AdminDashboard() {
 
             {/* Stats Grid */}
             <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
-              <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-yellow-400 hover:transform hover:-translate-y-1 transition-all duration-300">
+              <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-red-400 hover:transform hover:-translate-y-1 transition-all duration-300">
                 <span className="text-gray-400 text-sm">Total Items</span>
                 <h2 className="text-3xl font-bold mt-2">{menuItems.length}</h2>
               </div>
-              <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-yellow-400 hover:transform hover:-translate-y-1 transition-all duration-300">
+              <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-red-400 hover:transform hover:-translate-y-1 transition-all duration-300">
                 <span className="text-gray-400 text-sm">Active Orders</span>
                 <h2 className="text-3xl font-bold mt-2">{orders.length}</h2>
               </div>
-              <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-yellow-400 hover:transform hover:-translate-y-1 transition-all duration-300">
+              <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-red-400 hover:transform hover:-translate-y-1 transition-all duration-300">
                 <span className="text-gray-400 text-sm">Images Stored</span>
                 <h2 className="text-3xl font-bold mt-2">{uploads.length}</h2>
               </div>
-              <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-yellow-400 hover:transform hover:-translate-y-1 transition-all duration-300">
+              <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-red-400 hover:transform hover:-translate-y-1 transition-all duration-300">
                 <span className="text-gray-400 text-sm">Contact Messages</span>
                 <h2 className="text-3xl font-bold mt-2">{contactMessages.length}</h2>
               </div>
-              <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-yellow-400 hover:transform hover:-translate-y-1 transition-all duration-300">
+              <div className="bg-gray-800 p-6 rounded-2xl border-b-4 border-red-400 hover:transform hover:-translate-y-1 transition-all duration-300">
                 <span className="text-gray-400 text-sm">API Status</span>
                 <h2 className="text-3xl font-bold mt-2 text-green-400">Online</h2>
               </div>
             </div>
             {/* Orders Table */}
-            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:shadow-2xl hover:shadow-yellow-400/10 transition-all duration-300">
+            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:shadow-2xl hover:shadow-red-400/10 transition-all duration-300">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-bold">Recent Transactions</h3>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cursor-pointer text-gray-400 hover:text-yellow-400 transition-colors">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cursor-pointer text-gray-400 hover:text-red-400 transition-colors">
                   <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                 </svg>
               </div>
@@ -684,11 +684,11 @@ export default function AdminDashboard() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-gray-700">
-                      <th className="text-left text-yellow-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Order ID</th>
-                      <th className="text-left text-yellow-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Customer</th>
-                      <th className="text-left text-yellow-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Items</th>
-                      <th className="text-left text-yellow-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Status</th>
-                      <th className="text-left text-yellow-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Actions</th>
+                      <th className="text-left text-red-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Order ID</th>
+                      <th className="text-left text-red-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Customer</th>
+                      <th className="text-left text-red-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Items</th>
+                      <th className="text-left text-red-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Status</th>
+                      <th className="text-left text-red-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -702,7 +702,7 @@ export default function AdminDashboard() {
                         <td className="py-3 px-4">
                           <span className={`inline-flex items-center gap-2 ${
                             order.status === 'COMPLETED' ? 'text-green-400' :
-                            order.status === 'PENDING' ? 'text-yellow-400' :
+                            order.status === 'PENDING' ? 'text-red-400' :
                             order.status === 'APPROVED' ? 'text-blue-400' :
                             'text-red-400'
                           }`}>
@@ -713,7 +713,7 @@ export default function AdminDashboard() {
                         <td className="py-3 px-4">
                           <button
                             onClick={() => handleOrderClick(order)}
-                            className="text-gray-400 hover:text-yellow-400 transition-colors"
+                            className="text-gray-400 hover:text-red-400 transition-colors"
                           >
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -729,19 +729,19 @@ export default function AdminDashboard() {
             </div>
 
             {/* Media Library Section */}
-            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 mt-8 hover:shadow-2xl hover:shadow-yellow-400/10 transition-all duration-300">
+            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 mt-8 hover:shadow-2xl hover:shadow-red-400/10 transition-all duration-300">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-bold">Media Library</h3>
                 <button
                   onClick={() => toggleModal('uploadModal')}
-                  className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold text-sm hover:bg-yellow-300 transition-colors"
+                  className="bg-red-400 text-black px-4 py-2 rounded-lg font-semibold text-sm hover:bg-red-300 transition-colors"
                 >
                   Add Media
                 </button>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-80 overflow-y-auto">
                 {uploads.slice(0, 12).map((upload) => (
-                  <div key={upload.asset_id} className="bg-gray-700 rounded-lg overflow-hidden border border-gray-600 hover:border-yellow-400 transition-colors">
+                  <div key={upload.asset_id} className="bg-gray-700 rounded-lg overflow-hidden border border-gray-600 hover:border-red-400 transition-colors">
                     <img
                       src={upload.secure_url}
                       alt="Uploaded media"
@@ -775,7 +775,7 @@ export default function AdminDashboard() {
             <div className="rounded-2xl border border-gray-700 bg-gray-800 p-6 shadow-[0_16px_40px_rgba(15,23,42,0.24)]">
               <div className="mb-4 flex items-center justify-between gap-3">
                 <h3 className="text-xl font-bold">Inbox</h3>
-                <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3 py-1 text-xs font-semibold text-yellow-300">
+                <span className="rounded-full border border-red-400/30 bg-red-400/10 px-3 py-1 text-xs font-semibold text-red-300">
                   Stored in ContactMessage
                 </span>
               </div>
@@ -784,15 +784,15 @@ export default function AdminDashboard() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-gray-700">
-                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-yellow-400">Name</th>
-                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-yellow-400">Email</th>
-                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-yellow-400">Message</th>
-                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-yellow-400">Date</th>
+                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-red-400">Name</th>
+                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-red-400">Email</th>
+                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-red-400">Message</th>
+                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-red-400">Date</th>
                     </tr>
                   </thead>
                   <tbody>
                     {contactMessages.slice(0, 25).map((entry) => (
-                      <tr key={entry.id} className={`border-b border-gray-700/70 ${entry.isRead ? 'bg-transparent' : 'bg-yellow-400/5'}`}>
+                      <tr key={entry.id} className={`border-b border-gray-700/70 ${entry.isRead ? 'bg-transparent' : 'bg-red-400/5'}`}>
                         <td className="px-4 py-4 text-gray-200">{entry.name}</td>
                         <td className="px-4 py-4 text-gray-300">{entry.email}</td>
                         <td className="px-4 py-4 text-gray-300">
@@ -826,7 +826,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:shadow-2xl hover:shadow-yellow-400/10 transition-all duration-300">
+            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:shadow-2xl hover:shadow-red-400/10 transition-all duration-300">
               <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h3 className="text-xl font-bold">All Orders</h3>
                 <div className="flex gap-2">
@@ -844,13 +844,13 @@ export default function AdminDashboard() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-gray-700">
-                      <th className="text-left text-yellow-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Order ID</th>
-                      <th className="text-left text-yellow-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Customer</th>
-                      <th className="text-left text-yellow-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Items</th>
-                      <th className="text-left text-yellow-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Total</th>
-                      <th className="text-left text-yellow-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Status</th>
-                      <th className="text-left text-yellow-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Date</th>
-                      <th className="text-left text-yellow-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Actions</th>
+                      <th className="text-left text-red-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Order ID</th>
+                      <th className="text-left text-red-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Customer</th>
+                      <th className="text-left text-red-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Items</th>
+                      <th className="text-left text-red-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Total</th>
+                      <th className="text-left text-red-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Status</th>
+                      <th className="text-left text-red-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Date</th>
+                      <th className="text-left text-red-400 py-3 px-4 uppercase text-xs font-bold tracking-wider">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -870,7 +870,7 @@ export default function AdminDashboard() {
                         <td className="py-3 px-4">
                           <span className={`inline-flex items-center gap-2 px-2 py-1 rounded-full text-xs font-medium ${
                             order.status === 'COMPLETED' ? 'bg-green-500/20 text-green-400' :
-                            order.status === 'PENDING' ? 'bg-yellow-500/20 text-yellow-400' :
+                            order.status === 'PENDING' ? 'bg-red-500/20 text-red-400' :
                             order.status === 'APPROVED' ? 'bg-blue-500/20 text-blue-400' :
                             order.status === 'RECEIVED' ? 'bg-purple-500/20 text-purple-400' :
                             'bg-red-500/20 text-red-400'
@@ -884,7 +884,7 @@ export default function AdminDashboard() {
                         <td className="py-3 px-4">
                           <button
                             onClick={() => handleOrderClick(order)}
-                            className="text-gray-400 hover:text-yellow-400 transition-colors mr-2"
+                            className="text-gray-400 hover:text-red-400 transition-colors mr-2"
                           >
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -911,7 +911,7 @@ export default function AdminDashboard() {
               </div>
               <button
                 onClick={() => toggleModal('menuModal')}
-                className="flex items-center justify-center gap-2 rounded-lg bg-yellow-400 px-4 py-3 font-bold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-300 hover:shadow-lg"
+                className="flex items-center justify-center gap-2 rounded-lg bg-red-400 px-4 py-3 font-bold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-300 hover:shadow-lg"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10"></circle>
@@ -924,7 +924,7 @@ export default function AdminDashboard() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {menuItems.map((item) => (
-                <div key={item.id} className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-yellow-400 transition-all duration-300 hover:transform hover:-translate-y-1">
+                <div key={item.id} className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-red-400 transition-all duration-300 hover:transform hover:-translate-y-1">
                   <div className="mb-4 flex items-start justify-between gap-3">
                     <div className="flex-1">
                       <h3 className="text-lg font-bold text-white mb-1">{item.name}</h3>
@@ -932,7 +932,7 @@ export default function AdminDashboard() {
                         {item.category}
                         {item.subcategory ? ` / ${item.subcategory}` : ""}
                       </p>
-                      <p className="text-yellow-400 font-semibold">${item.price.toFixed(2)}</p>
+                      <p className="text-red-400 font-semibold">${item.price.toFixed(2)}</p>
                     </div>
                     {item.imageUrl && (
                       <img
@@ -952,7 +952,7 @@ export default function AdminDashboard() {
                       {item.isAvailable ? 'Available' : 'Unavailable'}
                     </span>
                     <div className="flex gap-2">
-                      <button className="text-gray-400 hover:text-yellow-400 transition-colors">
+                      <button className="text-gray-400 hover:text-red-400 transition-colors">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
@@ -998,7 +998,7 @@ export default function AdminDashboard() {
               </div>
               <button
                 onClick={() => toggleModal('uploadModal')}
-                className="flex items-center justify-center gap-2 rounded-lg bg-yellow-400 px-4 py-3 font-bold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-300 hover:shadow-lg"
+                className="flex items-center justify-center gap-2 rounded-lg bg-red-400 px-4 py-3 font-bold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-300 hover:shadow-lg"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
@@ -1011,10 +1011,10 @@ export default function AdminDashboard() {
               </button>
             </div>
 
-            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:shadow-2xl hover:shadow-yellow-400/10 transition-all duration-300">
+            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:shadow-2xl hover:shadow-red-400/10 transition-all duration-300">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
                 {uploads.map((upload) => (
-                  <div key={upload.asset_id} className="bg-gray-700 rounded-lg overflow-hidden border border-gray-600 hover:border-yellow-400 transition-all duration-300 hover:transform hover:scale-105">
+                  <div key={upload.asset_id} className="bg-gray-700 rounded-lg overflow-hidden border border-gray-600 hover:border-red-400 transition-all duration-300 hover:transform hover:scale-105">
                     <img
                       src={upload.secure_url}
                       alt="Uploaded media"
@@ -1070,8 +1070,8 @@ export default function AdminDashboard() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:shadow-2xl hover:shadow-yellow-400/10 transition-all duration-300">
-                <h3 className="text-lg font-bold mb-4 text-yellow-400">System Information</h3>
+              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:shadow-2xl hover:shadow-red-400/10 transition-all duration-300">
+                <h3 className="text-lg font-bold mb-4 text-red-400">System Information</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-gray-400">API Status</span>
@@ -1092,8 +1092,8 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:shadow-2xl hover:shadow-yellow-400/10 transition-all duration-300">
-                <h3 className="text-lg font-bold mb-4 text-yellow-400">Quick Actions</h3>
+              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:shadow-2xl hover:shadow-red-400/10 transition-all duration-300">
+                <h3 className="text-lg font-bold mb-4 text-red-400">Quick Actions</h3>
                 <div className="space-y-3">
                   <button className="w-full bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors text-left">
                     Clear Cache
@@ -1330,7 +1330,7 @@ export default function AdminDashboard() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-yellow"
+              className="btn-red"
               style={{
                 width: '100%',
                 justifyContent: 'center',
@@ -1434,7 +1434,7 @@ export default function AdminDashboard() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-yellow"
+              className="btn-red"
               style={{
                 width: '100%',
                 justifyContent: 'center',
@@ -1642,7 +1642,7 @@ export default function AdminDashboard() {
                 type="button"
                 onClick={() => void handleConfirmOrderStatusChange()}
                 disabled={loading}
-                className="btn-yellow"
+                className="btn-red"
                 style={{
                   flex: 1,
                   justifyContent: 'center',
@@ -1675,10 +1675,10 @@ export default function AdminDashboard() {
           right: '16px',
           left: '16px',
           background: 'var(--brand-dark)',
-          border: '1px solid var(--brand-yellow)',
+          border: '1px solid var(--brand-red)',
           borderRadius: '8px',
           padding: '1rem',
-          color: 'var(--brand-yellow)',
+          color: 'var(--brand-red)',
           zIndex: 1001,
           maxWidth: '420px',
           width: 'auto',

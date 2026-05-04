@@ -3,7 +3,7 @@
 :root {
   --background: #050505;
   --foreground: #f5f5f5;
-  --brand-yellow: #ffd43b;
+  --brand-red: #da291c;
   --brand-black: #0b0b0b;
   --brand-dark: #151515;
   --brand-white: #ffffff;
@@ -14,8 +14,8 @@
 
 body {
   min-height: 100vh;
-  background: radial-gradient(circle at top, rgba(255, 212, 59, 0.12), transparent 28%),
-    radial-gradient(circle at bottom right, rgba(255, 212, 59, 0.06), transparent 22%),
+  background: radial-gradient(circle at top, rgba(218, 41, 28, 0.12), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(218, 41, 28, 0.06), transparent 22%),
     linear-gradient(180deg, #050505 0%, #0b0b0b 100%);
   color: var(--foreground);
   font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
@@ -34,13 +34,13 @@ body {
   to { transform: translateY(0); opacity: 1; }
 }
 
-.btn-yellow:hover {
+.btn-red:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(218, 41, 28, 0.3);
 }
 
 nav a:hover {
-  color: var(--brand-yellow) !important;
+  color: var(--brand-red) !important;
 }
 
 .stat-card:hover {
@@ -53,7 +53,7 @@ nav a:hover {
 }
 
 .content-box:hover {
-  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.1);
+  box-shadow: 0 8px 25px rgba(218, 41, 28, 0.1);
 }
 
 .modal-overlay {

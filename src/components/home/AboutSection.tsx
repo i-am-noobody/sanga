@@ -4,24 +4,6 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default function AboutSection() {
-  const highlights = [
-    {
-      title: "Quality First",
-      detail: "Premium ingredients and careful prep in every sanga.",
-    },
-    {
-      title: "Unique Technique",
-      detail: "Our pan-fried finish delivers crisp texture and deep flavor.",
-    },
-    {
-      title: "Great Value",
-      detail: "Accessible pricing without compromising on quality.",
-    },
-    {
-      title: "Made Consistent",
-      detail: "Reliable taste and service that keep customers coming back.",
-    },
-  ];
 
   return (
     <motion.section
@@ -42,17 +24,14 @@ export default function AboutSection() {
             height={560}
             className="h-full w-full object-cover"
           />
-          <p className="absolute bottom-4 left-4 z-20 rounded-full border border-white/20 bg-black/45 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-yellow-200 backdrop-blur-sm">
+          <p className="absolute bottom-4 left-4 z-20 rounded-full border border-white/20 bg-black/45 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#DA291C] backdrop-blur-sm">
             Fresh Daily, Cooked To Order
           </p>
         </div>
 
         <div className="text-center lg:text-left">
-          <p className="mb-3 inline-flex rounded-full border border-yellow-300/35 bg-yellow-300/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-yellow-200">
-            Why Customers Choose Us
-          </p>
           <h2 className="mb-4 text-3xl font-bold sm:text-4xl">
-            About <span className="text-yellow-300">Us</span>
+            About <span className="text-[#DA291C]">Us</span>
           </h2>
           <p className="mb-4 text-base leading-relaxed text-slate-300 sm:text-lg">
             Mr Sanga elevates the everyday sandwich using premium ingredients, chef-crafted recipes,
@@ -64,20 +43,7 @@ export default function AboutSection() {
             we focus on value, quality, and consistency so every customer gets a top-tier experience.
           </p>
 
-          <div className="grid gap-3 text-left sm:grid-cols-2">
-            {highlights.map((item) => (
-              <article
-                key={item.title}
-                className="rounded-2xl border border-white/12 bg-black/35 p-4 shadow-[0_10px_22px_rgba(2,6,23,0.35)] transition hover:border-yellow-300/40 hover:bg-black/45"
-              >
-                <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded-full bg-yellow-300" aria-hidden />
-                  <p className="text-sm font-semibold uppercase tracking-[0.14em] text-yellow-100">{item.title}</p>
-                </div>
-                <p className="mt-2 text-sm leading-relaxed text-slate-300">{item.detail}</p>
-              </article>
-            ))}
-          </div>
+         
         </div>
       </div>
     </motion.section>

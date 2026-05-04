@@ -59,7 +59,7 @@ export default function ContactSection() {
     >
       <div className="mx-auto grid max-w-5xl gap-6 item-center">
         <div className="rounded-3xl border border-white/10 bg-white/5 p-6 text-left shadow-[0_16px_40px_rgba(15,23,42,0.25)] backdrop-blur-sm sm:p-8">
-          <h2 className="mb-3 text-3xl font-bold text-yellow-400 sm:text-4xl">Contact Us</h2>
+          <h2 className="mb-3 text-3xl font-bold text-red-400 sm:text-4xl">Contact Us</h2>
           <p className="max-w-2xl text-sm leading-6 text-slate-300/80 sm:text-base">
             Send us a message for catering, questions, or feedback. 
             We will review all messages and get back to you as soon as possible.
@@ -72,14 +72,14 @@ export default function ContactSection() {
                 value={name}
                 onChange={(event) => setName(event.target.value)}
                 placeholder="Name"
-                className="w-full rounded-2xl border border-white/10 bg-slate-950/70 p-4 text-white placeholder:text-slate-500 focus:border-yellow-400 focus:outline-none"
+                className="w-full rounded-2xl border border-white/10 bg-slate-950/70 p-4 text-white placeholder:text-slate-500 focus:border-red-400 focus:outline-none"
               />
               <input
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 placeholder="Email"
-                className="w-full rounded-2xl border border-white/10 bg-slate-950/70 p-4 text-white placeholder:text-slate-500 focus:border-yellow-400 focus:outline-none"
+                className="w-full rounded-2xl border border-white/10 bg-slate-950/70 p-4 text-white placeholder:text-slate-500 focus:border-red-400 focus:outline-none"
               />
             </div>
             <textarea
@@ -87,17 +87,17 @@ export default function ContactSection() {
               onChange={(event) => setMessage(event.target.value)}
               placeholder="Message"
               rows={5}
-              className="w-full resize-none rounded-2xl border border-white/10 bg-slate-950/70 p-4 text-white placeholder:text-slate-500 focus:border-yellow-400 focus:outline-none"
+              className="w-full resize-none rounded-2xl border border-white/10 bg-slate-950/70 p-4 text-white placeholder:text-slate-500 focus:border-red-400 focus:outline-none"
             />
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex w-full items-center justify-center rounded-full bg-yellow-400 px-5 py-3.5 font-semibold text-black transition-colors hover:bg-yellow-500 disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex w-full items-center justify-center rounded-full bg-red-400 px-5 py-3.5 font-semibold text-black transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-70"
             >
               {isSubmitting ? "Sending..." : "Send Message"}
             </button>
             {status ? (
-              <p className="rounded-2xl border border-yellow-300/20 bg-yellow-300/10 p-4 text-sm text-yellow-100">
+              <p className="rounded-2xl border border-red-300/20 bg-red-300/10 p-4 text-sm text-red-100">
                 {status}
               </p>
             ) : null}

@@ -65,7 +65,7 @@ export default function GallerySection() {
       viewport={{ once: true }}
     >
       <div className="mx-auto mb-10 max-w-6xl">
-        <h2 className="mb-3 text-3xl font-bold text-yellow-300 sm:text-4xl">Gallery</h2>
+        <h2 className="mb-3 text-3xl font-bold text-[#DA291C] sm:text-4xl">Gallery</h2>
         <p className="mx-auto max-w-2xl text-sm text-slate-300/80 sm:text-base">
           Moments from the kitchen and happy customers.
         </p>

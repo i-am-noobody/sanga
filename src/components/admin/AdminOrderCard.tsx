@@ -30,8 +30,8 @@ interface Props {
 
 export default function AdminOrderCard({ orders, loading, onStatusChange }: Props) {
   const statusColors = {
-    PENDING: "bg-yellow-500/10 text-yellow-200 border-yellow-500/20",
-    RECEIVED: "bg-yellow-400/10 text-yellow-200 border-yellow-400/20",
+    PENDING: "bg-red-500/10 text-red-200 border-red-500/20",
+    RECEIVED: "bg-red-400/10 text-red-200 border-red-400/20",
     APPROVED: "bg-green-500/10 text-green-200 border-green-500/20",
     COMPLETED: "bg-slate-700/10 text-slate-200 border-slate-700/20",
     CANCELLED: "bg-red-500/10 text-red-200 border-red-500/20",
@@ -43,25 +43,25 @@ export default function AdminOrderCard({ orders, loading, onStatusChange }: Prop
   };
 
   return (
-    <div className="rounded-[2rem] border border-yellow-300/20 bg-[#070707]/95 p-4 shadow-[0_24px_80px_-50px_rgba(255,214,0,0.35)] sm:p-8">
+    <div className="rounded-[2rem] border border-red-300/20 bg-[#070707]/95 p-4 shadow-[0_24px_80px_-50px_rgba(218,41,28,0.35)] sm:p-8">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-yellow-300/70">Order management</p>
+          <p className="text-xs uppercase tracking-[0.35em] text-red-300/70">Order management</p>
           <h2 className="mt-3 text-2xl font-semibold text-white">Orders queue</h2>
         </div>
-        <span className="rounded-full border border-yellow-300/20 bg-yellow-300/10 px-3 py-1 text-xs uppercase tracking-[0.28em] text-yellow-200">
+        <span className="rounded-full border border-red-300/20 bg-red-300/10 px-3 py-1 text-xs uppercase tracking-[0.28em] text-red-200">
           {orders.length} total
         </span>
       </div>
 
       <div className="mt-6 space-y-4">
         {orders.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-yellow-300/30 bg-white/5 p-8 text-center text-slate-400">
+          <div className="rounded-3xl border border-dashed border-red-300/30 bg-white/5 p-8 text-center text-slate-400">
             No orders yet. Orders will appear here when customers place them.
           </div>
         ) : (
           orders.map((order) => (
-            <div key={order.id} className="rounded-3xl border border-yellow-300/20 bg-[#0b0b0b]/90 p-6 transition hover:-translate-y-1 hover:border-yellow-300/40">
+            <div key={order.id} className="rounded-3xl border border-red-300/20 bg-[#0b0b0b]/90 p-6 transition hover:-translate-y-1 hover:border-red-300/40">
               <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
                 <div className="flex-1 space-y-3">
                   <div className="flex flex-wrap items-center gap-3">
@@ -82,7 +82,7 @@ export default function AdminOrderCard({ orders, loading, onStatusChange }: Prop
                       </p>
                     ))}
                   </div>
-                  <p className="text-lg font-semibold text-yellow-200">Total: ${order.totalPrice.toFixed(2)}</p>
+                  <p className="text-lg font-semibold text-red-200">Total: ${order.totalPrice.toFixed(2)}</p>
                   {order.pickupTime ? (
                     <p className="text-sm text-slate-300">
                       Pickup: {new Date(order.pickupTime).toLocaleString()}
@@ -99,7 +99,7 @@ export default function AdminOrderCard({ orders, loading, onStatusChange }: Prop
                         <button
                           onClick={() => handleStatusChange(order.id, "RECEIVED")}
                           disabled={loading}
-                          className="rounded-full bg-yellow-400 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-black transition hover:bg-yellow-300 disabled:opacity-50"
+                          className="rounded-full bg-red-400 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-black transition hover:bg-red-300 disabled:opacity-50"
                         >
                           Mark Received
                         </button>

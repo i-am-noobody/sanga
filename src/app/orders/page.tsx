@@ -72,7 +72,7 @@ export default function OrdersPage() {
       <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(249,204,74,0.08),_transparent_35%)] px-4 py-24 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-5xl">
           <div className="mb-12 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-yellow-400/80">Order Tracking</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-red-400/80">Order Tracking</p>
             <h1 className="mt-4 text-4xl font-bold sm:text-5xl">See your orders and current status</h1>
             <p className="mt-4 text-gray-300 sm:text-lg">
               Enter the email address used when placing your order to view all your orders and their details. If you just placed an order, check your email for a direct link to view it immediately.
@@ -88,7 +88,7 @@ export default function OrdersPage() {
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   required
-                  className="mt-2 w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20"
+                  className="mt-2 w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition focus:border-red-400 focus:ring-2 focus:ring-red-400/20"
                   placeholder="you@example.com"
                 />
               </label>
@@ -98,7 +98,7 @@ export default function OrdersPage() {
                   type="tel"
                   value={phone}
                   onChange={(event) => setPhone(event.target.value)}
-                  className="mt-2 w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20"
+                  className="mt-2 w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition focus:border-red-400 focus:ring-2 focus:ring-red-400/20"
                   placeholder="+61 4XX XXX XXX"
                 />
               </label>
@@ -107,7 +107,7 @@ export default function OrdersPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex h-14 items-center justify-center rounded-full bg-yellow-400 px-6 font-semibold text-black transition hover:bg-yellow-500 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex h-14 items-center justify-center rounded-full bg-red-400 px-6 font-semibold text-black transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? "Searching orders..." : "Find my orders"}
               </button>
@@ -118,7 +118,7 @@ export default function OrdersPage() {
           </form>
 
           <div className="mt-12 space-y-6">
-            {message ? <p className="rounded-3xl border border-yellow-400/20 bg-yellow-400/5 p-4 text-sm text-yellow-200">{message}</p> : null}
+            {message ? <p className="rounded-3xl border border-red-400/20 bg-red-400/5 p-4 text-sm text-red-200">{message}</p> : null}
 
             {orders.length > 0 && (
               <div className="space-y-6">
@@ -135,7 +135,7 @@ export default function OrdersPage() {
                       </div>
                       <div className="space-y-2 sm:text-right">
                         <p className="text-sm text-gray-400">Status</p>
-                        <span className="inline-flex rounded-full border border-yellow-300/30 bg-yellow-400/10 px-3 py-1 text-sm font-semibold text-yellow-200">
+                        <span className="inline-flex rounded-full border border-red-300/30 bg-red-400/10 px-3 py-1 text-sm font-semibold text-red-200">
                           {order.status}
                         </span>
                       </div>
@@ -160,7 +160,7 @@ export default function OrdersPage() {
                       <p className="text-sm text-gray-300">Open full order details for line items and contact information.</p>
                       <Link
                         href={`/orders/${order.id}`}
-                        className="inline-flex items-center justify-center rounded-full border border-yellow-300/40 bg-yellow-300/10 px-6 py-3 text-sm font-semibold text-yellow-200 transition hover:bg-yellow-300/20"
+                        className="inline-flex items-center justify-center rounded-full border border-red-300/40 bg-red-300/10 px-6 py-3 text-sm font-semibold text-red-200 transition hover:bg-red-300/20"
                       >
                         View Order Details
                       </Link>

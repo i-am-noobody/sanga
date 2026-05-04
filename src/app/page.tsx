@@ -169,18 +169,18 @@ export default function Home() {
       <footer className="bg-gray-900 px-4 py-14 sm:px-6 md:px-8">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-2xl font-bold text-yellow-400 mb-4">MR SANGA'S</h3>
+            <h3 className="text-2xl font-bold text-red-400 mb-4">MR SANGA'S</h3>
             <p className="text-gray-400">Best sandwiches in town</p>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-yellow-400 mb-4">Follow Us</h4>
+            <h4 className="text-lg font-semibold text-red-400 mb-4">Follow Us</h4>
             <div className="flex gap-6">
               <a
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="group rounded-full border border-white/10 bg-white/5 p-3 text-gray-400 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#ffd43b]/40 hover:bg-[#ffd43b]/10 hover:text-[#ffd43b]"
+                className="group rounded-full border border-white/10 bg-white/5 p-3 text-gray-400 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#da291c]/40 hover:bg-[#da291c]/10 hover:text-[#da291c]"
               >
                 <FacebookIcon className="h-7 w-7" />
               </a>
@@ -189,14 +189,14 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="group rounded-full border border-white/10 bg-white/5 p-3 text-gray-400 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#ffd43b]/40 hover:bg-[#ffd43b]/10 hover:text-[#ffd43b]"
+                className="group rounded-full border border-white/10 bg-white/5 p-3 text-gray-400 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#da291c]/40 hover:bg-[#da291c]/10 hover:text-[#da291c]"
               >
                 <InstagramIcon className="h-7 w-7" />
               </a>
             </div>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-yellow-400 mb-4">Contact</h4>
+            <h4 className="text-lg font-semibold text-red-400 mb-4">Contact</h4>
             <p className="text-gray-400">Brisbane, Australia</p>
             <p className="text-gray-400">+61 123 456 789</p>
           </div>
@@ -204,7 +204,7 @@ export default function Home() {
       </footer>
 
       <button
-        className="fixed bottom-3 right-3 z-40 rounded-full bg-yellow-400 p-3 text-black shadow-lg transition-colors hover:bg-yellow-500 sm:bottom-4 sm:right-4 sm:p-4"
+        className="fixed bottom-3 right-3 z-40 rounded-full bg-red-400 p-3 text-black shadow-lg transition-colors hover:bg-red-500 sm:bottom-4 sm:right-4 sm:p-4"
         onClick={() => setIsModalOpen(true)}
       >
         Cart ({cart.length})

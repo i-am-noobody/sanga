@@ -46,7 +46,7 @@ export default function OrderModal({
             placeholder="Your Name *"
             value={customerName}
             onChange={(e) => onChangeCustomerName(e.target.value)}
-            className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-yellow-400 focus:outline-none"
+            className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-red-400 focus:outline-none"
             required
           />
           <input
@@ -54,7 +54,7 @@ export default function OrderModal({
             placeholder="Your Email *"
             value={customerEmail}
             onChange={(e) => onChangeCustomerEmail(e.target.value)}
-            className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-yellow-400 focus:outline-none"
+            className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-red-400 focus:outline-none"
             required
           />
           <input
@@ -62,14 +62,14 @@ export default function OrderModal({
             placeholder="Your Phone"
             value={customerPhone}
             onChange={(e) => onChangeCustomerPhone(e.target.value)}
-            className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-yellow-400 focus:outline-none"
+            className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-red-400 focus:outline-none"
           />
           <input
             type="datetime-local"
             placeholder="Pickup Time *"
             value={pickupTime}
             onChange={(e) => onChangePickupTime(e.target.value)}
-            className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-yellow-400 focus:outline-none"
+            className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-red-400 focus:outline-none"
             required
           />
         </div>
@@ -123,7 +123,7 @@ export default function OrderModal({
           <button
             type="button"
             onClick={onSubmit}
-            className="flex-1 bg-yellow-400 text-black py-3 rounded-lg font-semibold hover:bg-yellow-500 transition-colors"
+            className="flex-1 bg-red-400 text-black py-3 rounded-lg font-semibold hover:bg-red-500 transition-colors"
           >
             Place Order
           </button>

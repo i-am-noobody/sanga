@@ -54,7 +54,7 @@ export default async function OrderDetailPage({
       <div className="mx-auto max-w-4xl space-y-6">
         <Link
           href="/orders"
-          className="inline-flex items-center rounded-full border border-yellow-300/40 px-5 py-2 text-sm font-semibold text-yellow-200 transition hover:border-yellow-300/70 hover:text-yellow-100"
+          className="inline-flex items-center rounded-full border border-red-300/40 px-5 py-2 text-sm font-semibold text-red-200 transition hover:border-red-300/70 hover:text-red-100"
         >
           Back to Order Lookup
         </Link>
@@ -62,11 +62,11 @@ export default async function OrderDetailPage({
         <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-2xl shadow-black/20">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-yellow-400/80">Order Details</p>
+              <p className="text-sm uppercase tracking-[0.3em] text-red-400/80">Order Details</p>
               <h1 className="mt-2 text-4xl font-bold text-white">Order #{order.id}</h1>
               <p className="mt-2 text-gray-400">Placed {new Date(order.createdAt).toLocaleString()}</p>
             </div>
-            <span className="inline-flex rounded-full border border-yellow-300/30 bg-yellow-400/10 px-4 py-2 text-sm font-semibold text-yellow-200">
+            <span className="inline-flex rounded-full border border-red-300/30 bg-red-400/10 px-4 py-2 text-sm font-semibold text-red-200">
               {order.status}
             </span>
           </div>
@@ -108,7 +108,7 @@ export default async function OrderDetailPage({
             {order.customerPhone ? <p className="text-sm text-gray-300">{order.customerPhone}</p> : null}
           </div>
 
-          <div className="mt-6 rounded-3xl border border-yellow-300/30 bg-yellow-400/5 p-5 text-yellow-200">
+          <div className="mt-6 rounded-3xl border border-red-300/30 bg-red-400/5 p-5 text-red-200">
             <p className="text-sm">Keep this page bookmarked to check status updates anytime.</p>
             <p className="mt-2 text-sm text-gray-300">Need another order? Go back to order lookup and search with your email.</p>
           </div>

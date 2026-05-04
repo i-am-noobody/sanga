@@ -15,7 +15,7 @@ export default function LocationSection() {
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
     >
-      <h2 className="mb-4 text-4xl font-bold text-yellow-300">Our Location</h2>
+      <h2 className="mb-4 text-4xl font-bold text-red-300">Our Location</h2>
       <p className="mx-auto mb-10 max-w-2xl text-sm text-slate-300/80 sm:text-base">
         Visit us at Skygate Centre near DFO Brisbane Airport.
       </p>
@@ -34,32 +34,32 @@ export default function LocationSection() {
 
       <div className="mx-auto grid max-w-5xl gap-4 text-left md:grid-cols-3">
         <article className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-[0_8px_24px_rgba(2,6,23,0.28)] backdrop-blur-sm">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-yellow-200/90">Address</p>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-red-200/90">Address</p>
           <p className="text-sm leading-relaxed text-slate-200">{address}</p>
           <p className="mt-3 text-xs text-slate-400">Inside Skygate Centre, near DFO Brisbane Airport.</p>
         </article>
 
-        <article className="rounded-2xl border border-yellow-300/35 bg-yellow-300/95 p-5 shadow-[0_8px_24px_rgba(250,204,21,0.22)]">
+        <article className="rounded-2xl border border-red-300/35 bg-red-300/95 p-5 shadow-[0_8px_24px_rgba(218,41,28,0.22)]">
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-900/80">Quick Action</p>
           <p className="mb-4 text-sm leading-relaxed text-slate-950">Need the fastest route? Open turn-by-turn directions instantly.</p>
           <a
             href={`https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex w-full items-center justify-center rounded-xl border border-slate-950/20 bg-slate-950 px-4 py-3 text-center text-sm font-semibold text-yellow-100 transition hover:bg-black"
+            className="inline-flex w-full items-center justify-center rounded-xl border border-slate-950/20 bg-slate-950 px-4 py-3 text-center text-sm font-semibold text-red-100 transition hover:bg-black"
           >
             Get Directions
           </a>
         </article>
 
         <article className="rounded-2xl border border-white/15 bg-slate-950/50 p-5 shadow-[0_8px_24px_rgba(2,6,23,0.28)]">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-yellow-200/90">Map Access</p>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-red-200/90">Map Access</p>
           <p className="mb-4 text-sm leading-relaxed text-slate-200">Open the location in Google Maps to save or share it.</p>
           <a
             href={`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex w-full items-center justify-center rounded-xl border border-white/20 bg-transparent px-4 py-3 text-center text-sm font-semibold text-slate-100 transition hover:border-yellow-300/45 hover:text-yellow-200"
+            className="inline-flex w-full items-center justify-center rounded-xl border border-white/20 bg-transparent px-4 py-3 text-center text-sm font-semibold text-slate-100 transition hover:border-red-300/45 hover:text-red-200"
           >
             Open In Google Maps
           </a>

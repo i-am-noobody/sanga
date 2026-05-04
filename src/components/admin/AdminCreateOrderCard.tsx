@@ -41,13 +41,13 @@ export default function AdminCreateOrderCard({
   };
 
   return (
-    <div className="rounded-[2rem] border border-yellow-300/20 bg-[#070707]/95 p-4 shadow-[0_24px_80px_-50px_rgba(255,214,0,0.35)] sm:p-8">
+    <div className="rounded-[2rem] border border-red-300/20 bg-[#070707]/95 p-4 shadow-[0_24px_80px_-50px_rgba(218,41,28,0.35)] sm:p-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-yellow-300/70">Create new order</p>
+          <p className="text-xs uppercase tracking-[0.35em] text-red-300/70">Create new order</p>
           <h2 className="mt-3 text-2xl font-semibold text-white">Order builder</h2>
         </div>
-        <span className="rounded-full border border-yellow-300/20 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-300">
+        <span className="rounded-full border border-red-300/20 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-300">
           Manual entry
         </span>
       </div>
@@ -63,20 +63,20 @@ export default function AdminCreateOrderCard({
             onChange={(event) => onFormChange({ customerName: event.target.value })}
             placeholder="Customer name"
             required
-            className="w-full rounded-3xl border border-yellow-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-yellow-300"
+            className="w-full rounded-3xl border border-red-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-red-300"
           />
           <input
             value={form.customerEmail}
             onChange={(event) => onFormChange({ customerEmail: event.target.value })}
             placeholder="Email (optional)"
             type="email"
-            className="w-full rounded-3xl border border-yellow-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-yellow-300"
+            className="w-full rounded-3xl border border-red-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-red-300"
           />
           <input
             value={form.customerPhone}
             onChange={(event) => onFormChange({ customerPhone: event.target.value })}
             placeholder="Phone (optional)"
-            className="w-full rounded-3xl border border-yellow-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-yellow-300"
+            className="w-full rounded-3xl border border-red-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-red-300"
           />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -87,7 +87,7 @@ export default function AdminCreateOrderCard({
               value={form.pickupTime}
               onChange={(event) => onFormChange({ pickupTime: event.target.value })}
               required
-              className="mt-3 w-full rounded-3xl border border-yellow-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-yellow-300"
+              className="mt-3 w-full rounded-3xl border border-red-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-red-300"
             />
           </label>
           <div className="flex items-end">
@@ -104,7 +104,7 @@ export default function AdminCreateOrderCard({
                 if (menuItemId) onAddItem(menuItemId);
                 event.target.value = "";
               }}
-              className="rounded-3xl border border-yellow-300/20 bg-white/5 px-3 py-2 text-sm text-white outline-none transition focus:border-yellow-300"
+              className="rounded-3xl border border-red-300/20 bg-white/5 px-3 py-2 text-sm text-white outline-none transition focus:border-red-300"
             >
               <option value="">Add menu item</option>
               {menuItems.filter(item => item.isAvailable).map((item) => (
@@ -116,7 +116,7 @@ export default function AdminCreateOrderCard({
           </div>
 
           {form.items.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-yellow-300/30 bg-white/5 p-4 text-center text-slate-400">
+            <div className="rounded-3xl border border-dashed border-red-300/30 bg-white/5 p-4 text-center text-slate-400">
               No items added yet. Select items from the dropdown above.
             </div>
           ) : (
@@ -124,7 +124,7 @@ export default function AdminCreateOrderCard({
               {form.items.map((item, index) => {
                 const menuItem = menuItems.find(m => m.id === item.menuItemId);
                 return (
-                  <div key={index} className="flex flex-col gap-3 rounded-3xl border border-yellow-300/20 bg-[#0b0b0b]/90 p-4 sm:flex-row sm:items-center">
+                  <div key={index} className="flex flex-col gap-3 rounded-3xl border border-red-300/20 bg-[#0b0b0b]/90 p-4 sm:flex-row sm:items-center">
                     <div className="flex-1">
                       <p className="text-sm font-semibold text-white">{menuItem?.name}</p>
                       <p className="mt-1 text-xs text-slate-400">${menuItem?.price.toFixed(2)} each</p>
@@ -135,12 +135,12 @@ export default function AdminCreateOrderCard({
                         min="1"
                         value={item.quantity}
                         onChange={(event) => onUpdateQuantity(index, parseInt(event.target.value) || 1)}
-                        className="w-20 rounded-3xl border border-yellow-300/20 bg-white/5 px-3 py-2 text-center text-sm text-white outline-none transition focus:border-yellow-300"
+                        className="w-20 rounded-3xl border border-red-300/20 bg-white/5 px-3 py-2 text-center text-sm text-white outline-none transition focus:border-red-300"
                       />
                       <button
                         type="button"
                         onClick={() => onRemoveItem(index)}
-                        className="rounded-full bg-white/5 px-3 py-2 text-xs uppercase tracking-[0.22em] text-yellow-200 transition hover:bg-yellow-400/15"
+                        className="rounded-full bg-white/5 px-3 py-2 text-xs uppercase tracking-[0.22em] text-red-200 transition hover:bg-red-400/15"
                       >
                         remove
                       </button>
@@ -152,8 +152,8 @@ export default function AdminCreateOrderCard({
           )}
 
           {form.items.length > 0 && (
-            <div className="rounded-3xl border border-yellow-300/20 bg-yellow-400/5 p-4">
-              <p className="text-lg font-semibold text-yellow-200">Total: ${calculateTotal().toFixed(2)}</p>
+            <div className="rounded-3xl border border-red-300/20 bg-red-400/5 p-4">
+              <p className="text-lg font-semibold text-red-200">Total: ${calculateTotal().toFixed(2)}</p>
             </div>
           )}
         </div>
@@ -161,7 +161,7 @@ export default function AdminCreateOrderCard({
         <button
           type="submit"
           disabled={loading || form.items.length === 0}
-          className="inline-flex w-full items-center justify-center rounded-full bg-yellow-400 px-6 py-3 text-sm font-semibold text-black transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex w-full items-center justify-center rounded-full bg-red-400 px-6 py-3 text-sm font-semibold text-black transition hover:bg-red-300 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? "Creating order..." : "Create order"}
         </button>

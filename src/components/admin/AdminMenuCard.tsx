@@ -18,13 +18,13 @@ interface Props {
 
 export default function AdminMenuCard({ form, imageFile, loading, onFormChange, onFileChange, onSubmit }: Props) {
   return (
-    <div className="rounded-[2rem] border border-yellow-300/20 bg-[#070707]/95 p-4 shadow-[0_24px_80px_-50px_rgba(255,214,0,0.35)] sm:p-8">
+    <div className="rounded-[2rem] border border-red-300/20 bg-[#070707]/95 p-4 shadow-[0_24px_80px_-50px_rgba(218,41,28,0.35)] sm:p-8">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-yellow-300/70">Menu creation</p>
+          <p className="text-xs uppercase tracking-[0.35em] text-red-300/70">Menu creation</p>
           <h2 className="mt-3 text-2xl font-semibold text-white">Add a new dish</h2>
         </div>
-        <span className="rounded-full border border-yellow-300/20 bg-yellow-300/10 px-3 py-1 text-xs uppercase tracking-[0.28em] text-yellow-200">
+        <span className="rounded-full border border-red-300/20 bg-red-300/10 px-3 py-1 text-xs uppercase tracking-[0.28em] text-red-200">
           Live update
         </span>
       </div>
@@ -40,12 +40,12 @@ export default function AdminMenuCard({ form, imageFile, loading, onFormChange, 
             onChange={(event) => onFormChange({ name: event.target.value })}
             placeholder="Dish name"
             required
-            className="w-full rounded-3xl border border-yellow-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-yellow-300"
+            className="w-full rounded-3xl border border-red-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-red-300"
           />
           <select
             value={form.category}
             onChange={(event) => onFormChange({ category: event.target.value, subcategory: "" })}
-            className="w-full rounded-3xl border border-yellow-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-yellow-300"
+            className="w-full rounded-3xl border border-red-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-red-300"
           >
             {MENU_TAXONOMY.map((category) => (
               <option key={category.value} value={category.value}>
@@ -59,7 +59,7 @@ export default function AdminMenuCard({ form, imageFile, loading, onFormChange, 
           onChange={(event) => onFormChange({ subcategory: event.target.value })}
           placeholder="Subcategory (optional)"
           list="admin-menu-subcategories"
-          className="w-full rounded-3xl border border-yellow-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-yellow-300"
+          className="w-full rounded-3xl border border-red-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-red-300"
         />
         <datalist id="admin-menu-subcategories">
           {getSubcategoryOptions(form.category).map((subcategory) => (
@@ -71,7 +71,7 @@ export default function AdminMenuCard({ form, imageFile, loading, onFormChange, 
           onChange={(event) => onFormChange({ price: event.target.value })}
           placeholder="Price"
           required
-          className="w-full rounded-3xl border border-yellow-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-yellow-300"
+          className="w-full rounded-3xl border border-red-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-red-300"
         />
         <label className="block text-sm text-slate-300">
           Select image
@@ -79,7 +79,7 @@ export default function AdminMenuCard({ form, imageFile, loading, onFormChange, 
             type="file"
             accept="image/*"
             onChange={onFileChange}
-            className="mt-3 w-full rounded-3xl border border-yellow-300/20 bg-white/5 p-4 text-white outline-none transition focus:border-yellow-300"
+            className="mt-3 w-full rounded-3xl border border-red-300/20 bg-white/5 p-4 text-white outline-none transition focus:border-red-300"
           />
         </label>
         {imageFile && <p className="text-sm text-slate-400">Selected file: {imageFile.name}</p>}
@@ -88,12 +88,12 @@ export default function AdminMenuCard({ form, imageFile, loading, onFormChange, 
           onChange={(event) => onFormChange({ description: event.target.value })}
           placeholder="Description"
           rows={4}
-          className="w-full rounded-3xl border border-yellow-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-yellow-300"
+          className="w-full rounded-3xl border border-red-300/20 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-red-300"
         />
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex w-full items-center justify-center rounded-full bg-yellow-400 px-6 py-3 text-sm font-semibold text-black transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex w-full items-center justify-center rounded-full bg-red-400 px-6 py-3 text-sm font-semibold text-black transition hover:bg-red-300 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? "Saving item..." : "Create menu item"}
         </button>

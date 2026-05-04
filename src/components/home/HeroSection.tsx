@@ -56,16 +56,16 @@ export default function HeroSection({ onOrderNow }: HeroSectionProps) {
       ))}
 
       <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/30" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,212,59,0.12),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(255,212,59,0.06),transparent_25%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(218,41,28,0.12),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(218,41,28,0.06),transparent_25%)]" />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4 pt-24 sm:px-6 lg:px-8">
         <div className="w-full text-center">
-          <div className="mb-6 inline-flex items-center rounded-full border border-[#ffd43b]/30 bg-[#ffd43b]/10 px-5 py-2 text-sm font-medium text-[#ffd43b]">
+          <div className="mb-6 inline-flex items-center rounded-full border border-[#DA291C]/30 bg-[#DA291C]/10 px-5 py-2 text-sm font-bold text-[#DA291C]">
             {slides[currentSlide].badge}
           </div>
 
           <h1 className="mx-auto text-5xl font-black leading-[1.2] tracking-tight sm:text-6xl md:text-7xl">
-            {slides[currentSlide].title} <span className="text-[#ffd43b]">{slides[currentSlide].highlight}</span>
+            {slides[currentSlide].title} <span className="text-[#DA291C]">{slides[currentSlide].highlight}</span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg text-white/80 sm:text-xl">{slides[currentSlide].subtitle}</p>
@@ -74,7 +74,7 @@ export default function HeroSection({ onOrderNow }: HeroSectionProps) {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <button
               onClick={onOrderNow}
-              className="rounded-full bg-[#ffd43b] px-7 py-3 font-semibold text-black transition-all hover:-translate-y-0.5 hover:bg-[#ffe15b]"
+              className="rounded-full bg-[#DA291C] px-7 py-3 font-semibold text-black transition-all hover:-translate-y-0.5 hover:bg-[#e13a2d]"
             >
               Order for Pickup →
             </button>
@@ -86,12 +86,6 @@ export default function HeroSection({ onOrderNow }: HeroSectionProps) {
               View Menu
             </a>
           </div>
-
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3 text-sm text-white/75">
-            <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm">🥪 Fresh Ingredients</div>
-            <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm">🍔 Made to Order</div>
-            <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm">⚡ Fast Service</div>
-          </div>
         </div>
       </div>
 
@@ -99,7 +93,7 @@ export default function HeroSection({ onOrderNow }: HeroSectionProps) {
         type="button"
         aria-label="Previous slide"
         onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
-        className="absolute left-4 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/40 text-2xl text-white backdrop-blur-md transition hover:border-[#ffd43b]/45 hover:text-[#ffd43b] md:flex"
+        className="absolute left-4 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/40 text-2xl text-white backdrop-blur-md transition hover:border-[#DA291C]/45 hover:text-[#DA291C] md:flex"
       >
         &#8249;
       </button>
@@ -108,7 +102,7 @@ export default function HeroSection({ onOrderNow }: HeroSectionProps) {
         type="button"
         aria-label="Next slide"
         onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
-        className="absolute right-4 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/40 text-2xl text-white backdrop-blur-md transition hover:border-[#ffd43b]/45 hover:text-[#ffd43b] md:flex"
+        className="absolute right-4 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/40 text-2xl text-white backdrop-blur-md transition hover:border-[#DA291C]/45 hover:text-[#DA291C] md:flex"
       >
         &#8250;
       </button>
@@ -123,7 +117,7 @@ export default function HeroSection({ onOrderNow }: HeroSectionProps) {
             key={index}
             onClick={() => setCurrentSlide(index)}
             className={`h-2 rounded-full transition-all ${
-              currentSlide === index ? "w-8 bg-[#ffd43b]" : "w-2 bg-white/60"
+              currentSlide === index ? "w-8 bg-[#DA291C]" : "w-2 bg-white/60"
             }`}
           />
         ))}
