@@ -1,29 +1,104 @@
 "use client";
 
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 const testimonials = [
   {
-    name: "Sharni Tomkins",
+    name: "Olivia Brown",
     date: "2025-05-03",
-    text: "There is a huge range to choose from, but the burgers are pricey. Hit and miss with service.",
-    rating: 4,
+    text: "Amazing flavours and friendly staff — best in town!",
+    rating: 5,
+    image: "https://randomuser.me/api/portraits/women/65.jpg",
   },
   {
-    name: "Ayesha Khan",
+    name: "Jack Wilson",
     date: "2025-04-18",
-    text: "Fresh sandwiches, bold flavour, and a cozy vibe. A reliable spot for a quick meal.",
+    text: "Consistently great food. Highly recommend for a treat.",
     rating: 5,
+    image: "https://randomuser.me/api/portraits/men/32.jpg",
   },
   {
-    name: "Liam Carter",
+    name: "Amelia Smith",
     date: "2025-04-06",
-    text: "Great portions and a strong menu. The black-themed setup here matches the premium feel.",
+    text: "Lovely atmosphere and really tasty options for all tastes.",
     rating: 5,
+    image: "https://randomuser.me/api/portraits/women/12.jpg",
+  },
+  {
+    name: "Thomas Wright",
+    date: "2025-03-22",
+    text: "Fantastic service and high-quality ingredients every time.",
+    rating: 5,
+    image: "https://randomuser.me/api/portraits/men/45.jpg",
+  },
+  {
+    name: "Isla Harris",
+    date: "2025-03-02",
+    text: "Great spot for weekend brunch — we loved it!",
+    rating: 4,
+    image: "https://randomuser.me/api/portraits/women/24.jpg",
+  },
+  {
+    name: "Ethan Miller",
+    date: "2025-02-14",
+    text: "Top quality and close to perfect. Will come back.",
+    rating: 5,
+    image: "https://randomuser.me/api/portraits/men/18.jpg",
+  },
+  {
+    name: "Chloe Walker",
+    date: "2025-01-28",
+    text: "Friendly service, lovely food presentation, very tasty.",
+    rating: 4,
+    image: "https://randomuser.me/api/portraits/women/30.jpg",
   },
 ];
 
 export default function TestimonialsSection() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(true);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      setCanPrev(el.scrollLeft > 10);
+      setCanNext(el.scrollLeft + el.clientWidth + 10 < el.scrollWidth);
+    };
+    onScroll();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      el.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  const scrollByCard = (direction: "prev" | "next") => {
+    const el = containerRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLDivElement>(".testimonial-card");
+    const gap = 16; // matches tailwind gap-4
+    const step = (card?.clientWidth || Math.floor(el.clientWidth * 0.8)) + gap;
+
+    // Looping behavior: when moving next from end -> jump to start; when prev from start -> jump to end
+    if (direction === "next") {
+      if (el.scrollLeft + el.clientWidth + 10 >= el.scrollWidth) {
+        el.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        el.scrollBy({ left: step, behavior: "smooth" });
+      }
+    } else {
+      if (el.scrollLeft <= 10) {
+        el.scrollTo({ left: Math.max(0, el.scrollWidth - el.clientWidth), behavior: "smooth" });
+      } else {
+        el.scrollBy({ left: -step, behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <motion.section
       id="testimonials"
@@ -38,6 +113,8 @@ export default function TestimonialsSection() {
         style={{
           backgroundImage:
             "linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.95)), url('/logo.png')",
+          backgroundSize: "140%",
+          backgroundRepeat: "no-repeat",
         }}
       />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(218,41,28,0.16),transparent_30%),radial-gradient(circle_at_bottom,rgba(218,41,28,0.09),transparent_25%)]" />
@@ -55,50 +132,79 @@ export default function TestimonialsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {testimonials.map((testimonial, index) => (
-            <motion.article
-              key={testimonial.name}
-              className="relative mx-auto w-full max-w-[520px] rounded-[18px] border border-white/10 bg-[linear-gradient(145deg,#1b1b1b,#0d0d0d)] p-6 text-left shadow-[0_10px_30px_rgba(0,0,0,0.55)] sm:p-7"
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
-              viewport={{ once: true }}
+        <div className="relative">
+          <div className="pointer-events-auto absolute -left-2 top-1/2 z-20 hidden -translate-y-1/2 md:block">
+            <button
+              aria-label="Previous testimonials"
+              onClick={() => scrollByCard("prev")}
+              className={`rounded-full bg-white/6 p-3 text-white transition-opacity hover:opacity-90 ${canPrev ? "opacity-100" : "opacity-40"}`}
+              disabled={!canPrev}
             >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-[url('https://randomuser.me/api/portraits/women/44.jpg')] bg-cover bg-center ring-2 ring-[#DA291C]/70">
-                    <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#DA291C] text-[11px] font-black text-white shadow-md">
-                      ★
-                    </span>
+              ‹
+            </button>
+          </div>
+
+          <div
+            ref={containerRef}
+            className="no-scrollbar mx-auto flex w-full gap-4 overflow-x-auto px-2 py-4 scroll-smooth snap-x snap-mandatory"
+            style={{ scrollbarWidth: "none" as any }}
+          >
+            {testimonials.map((testimonial, index) => (
+              <motion.article
+                key={index}
+                className="testimonial-card snap-center flex-shrink-0 w-[320px] sm:w-[360px] lg:w-[420px] rounded-[18px] border border-white/10 bg-[linear-gradient(145deg,#1b1b1b,#0d0d0d)] p-6 text-left shadow-[0_10px_30px_rgba(0,0,0,0.55)] sm:p-7"
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+                viewport={{ once: true }}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-cover bg-center ring-2 ring-[#DA291C]/70"
+                      style={{ backgroundImage: `url('${testimonial.image}')` }}
+                    >
+                      <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#DA291C] text-[11px] font-black text-white shadow-md">
+                        ★
+                      </span>
+                    </div>
+                    <div>
+                      <p className="text-[17px] font-bold text-white">{testimonial.name}</p>
+                      <p className="text-[13px] text-white/45">{testimonial.date}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-[17px] font-bold text-white">{testimonial.name}</p>
-                    <p className="text-[13px] text-white/45">{testimonial.date}</p>
+
+                  <div className="text-4xl font-black leading-none bg-gradient-to-r from-[#DA291C] via-[#DA291C] to-[#DA291C] bg-clip-text text-transparent">
+                    G
                   </div>
                 </div>
 
-                <div className="text-2xl font-black leading-none bg-gradient-to-r from-[#DA291C] via-[#DA291C] to-[#DA291C] bg-clip-text text-transparent">
-                  G
+                <div className="mt-5 flex items-center gap-2">
+                  <div className="flex text-[#DA291C] text-[18px] tracking-[2px]">
+                    {[...Array(5)].map((_, starIndex) => (
+                      <span key={starIndex}>{starIndex < testimonial.rating ? "★" : "☆"}</span>
+                    ))}
+                  </div>
+                  <span className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#DA291C] text-[11px] font-bold text-white">
+                    ✓
+                  </span>
                 </div>
-              </div>
 
-              <div className="mt-5 flex items-center gap-2">
-                <div className="flex text-[#DA291C] text-[18px] tracking-[2px]">
-                  {[...Array(5)].map((_, starIndex) => (
-                    <span key={starIndex}>{starIndex < testimonial.rating ? "★" : "☆"}</span>
-                  ))}
-                </div>
-                <span className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#DA291C] text-[11px] font-bold text-white">
-                  ✓
-                </span>
-              </div>
+                <p className="mt-5 text-[17px] leading-8 text-white/78">{testimonial.text}</p>
+              </motion.article>
+            ))}
+          </div>
 
-              <p className="mt-5 text-[17px] leading-8 text-white/78">
-                {testimonial.text}
-              </p>
-            </motion.article>
-          ))}
+          <div className="pointer-events-auto absolute -right-2 top-1/2 z-20 hidden -translate-y-1/2 md:block">
+            <button
+              aria-label="Next testimonials"
+              onClick={() => scrollByCard("next")}
+              className={`rounded-full bg-white/6 p-3 text-white transition-opacity hover:opacity-90 ${canNext ? "opacity-100" : "opacity-40"}`}
+              disabled={!canNext}
+            >
+              ›
+            </button>
+          </div>
         </div>
       </div>
     </motion.section>
