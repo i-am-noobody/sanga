@@ -46,6 +46,7 @@ model Order {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   items        OrderItem[]
+  idempotency  OrderIdempotencyKey?
 }
 
 model OrderItem {
@@ -67,10 +68,44 @@ model ContactMessage {
   createdAt DateTime @default(now())
 }
 
+model OrderIdempotencyKey {
+  id          Int               @id @default(autoincrement())
+  key         String            @unique
+  requestHash String
+  status      IdempotencyStatus @default(PENDING)
+  orderId     Int?              @unique
+  expiresAt   DateTime
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  order       Order?            @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  @@index([expiresAt])
+}
+
+model RateLimitBucket {
+  id          Int      @id @default(autoincrement())
+  identifier  String
+  action      String
+  windowStart DateTime
+  count       Int      @default(0)
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([identifier, action, windowStart])
+  @@index([expiresAt])
+}
+
 enum OrderStatus {
   PENDING
   RECEIVED
   APPROVED
   COMPLETED
   CANCELLED
+}
+
+enum IdempotencyStatus {
+  PENDING
+  COMPLETED
+  FAILED
 }

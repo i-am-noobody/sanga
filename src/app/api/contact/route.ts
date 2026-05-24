@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../lib/prisma";
+import { Prisma } from "@prisma/client";
 import { getUser } from "../../lib/getUser";
 
 type ContactMessageRow = {
@@ -12,6 +13,12 @@ type ContactMessageRow = {
 };
 
 function isMissingContactMessageTable(error: unknown): boolean {
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error.code === "P2021" || error.code === "P2022") {
+      return true;
+    }
+  }
+
   if (!(error instanceof Error)) {
     return false;
   }
@@ -23,7 +30,10 @@ function isMissingContactMessageTable(error: unknown): boolean {
     (
       message.includes("does not exist") ||
       message.includes("relation") ||
-      message.includes("p2021")
+      message.includes("column") ||
+      message.includes("unknown column") ||
+      message.includes("p2021") ||
+      message.includes("p2022")
     )
   );
 }

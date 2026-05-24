@@ -2,6 +2,17 @@ import { prisma } from "../../lib/prisma";
 import { NextResponse } from "next/server";
 import { getUser } from "../../lib/getUser";
 
+const menuItemSafeSelect = {
+  id: true,
+  name: true,
+  description: true,
+  price: true,
+  imageUrl: true,
+  category: true,
+  isAvailable: true,
+  createdAt: true,
+} as const;
+
 function isUnknownSubcategoryArgument(error: unknown): boolean {
   return error instanceof Error && error.message.includes("Unknown argument `subcategory`");
 }
@@ -56,16 +67,7 @@ export async function GET() {
       }
 
       const fallbackItems = await prisma.menuItem.findMany({
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          price: true,
-          imageUrl: true,
-          category: true,
-          isAvailable: true,
-          createdAt: true,
-        },
+        select: menuItemSafeSelect,
         orderBy: { createdAt: "desc" },
       });
 
@@ -156,8 +158,17 @@ export async function POST(req: Request) {
         throw createError;
       }
 
-      // Backward compatibility: some environments still use a Prisma client without subcategory.
-      item = await prisma.menuItem.create({ data: createData });
+      // Backward compatibility: some environments have DB schema without subcategory.
+      // Use a safe select so Prisma doesn't try to read the missing column in RETURNING.
+      const fallbackItem = await prisma.menuItem.create({
+        data: createData,
+        select: menuItemSafeSelect,
+      });
+
+      item = {
+        ...fallbackItem,
+        subcategory: null,
+      };
     }
 
     return NextResponse.json(item, { status: 201 });

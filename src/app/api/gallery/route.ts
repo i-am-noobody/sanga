@@ -26,7 +26,7 @@ export async function GET() {
   try {
     const result = await cloudinary.api.resources({
       type: "upload",
-      prefix: "admin_uploads/",
+      prefix: "gallery_uploads/",
       max_results: 100,
     });
 

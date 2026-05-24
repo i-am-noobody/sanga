@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useEffect } from "react";
 import type { CartItem, MenuItem } from "@/components/home/types";
 import Navbar from "@/components/home/Navbar";
@@ -42,6 +42,8 @@ export default function Home() {
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [pickupTime, setPickupTime] = useState("");
+  const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
+  const idempotencyKeyRef = useRef<string | null>(null);
 
   const closeBanner = useCallback(() => {
     setShowBanner(false);
@@ -60,6 +62,10 @@ export default function Home() {
       document.body.style.overflow = previousOverflow;
     };
   }, [showBanner]);
+
+  useEffect(() => {
+    idempotencyKeyRef.current = null;
+  }, [cart, customerName, customerEmail, customerPhone, pickupTime]);
 
   const addToCart = (item: MenuItem) => {
     setCart((prev) => {
@@ -86,6 +92,10 @@ export default function Home() {
   };
 
   const submitOrder = async () => {
+    if (isSubmittingOrder) {
+      return;
+    }
+
     if (!customerName || !customerEmail || !pickupTime || cart.length === 0) {
       alert("Please fill in all required fields, provide your email, and add items to cart.");
       return;
@@ -108,10 +118,22 @@ export default function Home() {
       quantity: entry.quantity,
     }));
 
+    const idempotencyKey =
+      idempotencyKeyRef.current ??
+      (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(16).slice(2)}`);
+    idempotencyKeyRef.current = idempotencyKey;
+
+    setIsSubmittingOrder(true);
+
     try {
       const res = await fetch("/api/orders", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-Idempotency-Key": idempotencyKey,
+        },
         body: JSON.stringify({
           customerName,
           customerEmail,
@@ -123,6 +145,19 @@ export default function Home() {
 
       if (!res.ok) {
         const error = await res.json();
+        if (res.status === 429) {
+          const retryAfter = res.headers.get("Retry-After");
+          alert(
+            `Too many attempts. Please wait${retryAfter ? ` ${retryAfter} seconds` : ""} and try again.`
+          );
+          return;
+        }
+
+        if (res.status === 409) {
+          alert(error.error ?? "Duplicate order request detected. Please wait a moment and try again.");
+          return;
+        }
+
         alert(`Failed to place order: ${error.error}`);
         return;
       }
@@ -134,10 +169,13 @@ export default function Home() {
       setCustomerEmail("");
       setCustomerPhone("");
       setPickupTime("");
+      idempotencyKeyRef.current = null;
       router.push(`/orders/${createdOrder.id}`);
     } catch (error) {
       console.error("Order submission error:", error);
       alert("Failed to place order. Please check your internet connection and try again.");
+    } finally {
+      setIsSubmittingOrder(false);
     }
   };
 
@@ -169,7 +207,7 @@ export default function Home() {
       <footer className="bg-gray-900 px-4 py-14 sm:px-6 md:px-8">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-2xl font-bold text-red-400 mb-4">MR SANGA'S</h3>
+            <h3 className="text-2xl font-bold text-red-400 mb-4">MR SANGA&apos;S</h3>
             <p className="text-gray-400">Best sandwiches in town</p>
           </div>
           <div>
@@ -223,6 +261,7 @@ export default function Home() {
         onChangeCustomerPhone={setCustomerPhone}
         onChangePickupTime={setPickupTime}
         onSubmit={submitOrder}
+        isSubmitting={isSubmittingOrder}
         updateQuantity={updateQuantity}
       />
     </div>

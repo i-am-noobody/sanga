@@ -2,6 +2,17 @@ import { prisma } from "../../../lib/prisma";
 import { NextResponse } from "next/server";
 import { getUser } from "../../../lib/getUser";
 
+const menuItemSafeSelect = {
+  id: true,
+  name: true,
+  description: true,
+  price: true,
+  imageUrl: true,
+  category: true,
+  isAvailable: true,
+  createdAt: true,
+} as const;
+
 function isUnknownSubcategoryArgument(error: unknown): boolean {
   return error instanceof Error && error.message.includes("Unknown argument `subcategory`");
 }
@@ -23,6 +34,32 @@ function isMissingSubcategoryColumn(error: unknown): boolean {
 
 function shouldRetryWithoutSubcategory(error: unknown): boolean {
   return isUnknownSubcategoryArgument(error) || isMissingSubcategoryColumn(error);
+}
+
+async function findMenuItemByIdResilient(id: number) {
+  try {
+    return await prisma.menuItem.findUnique({
+      where: { id },
+    });
+  } catch (readError) {
+    if (!isMissingSubcategoryColumn(readError)) {
+      throw readError;
+    }
+
+    const fallbackItem = await prisma.menuItem.findUnique({
+      where: { id },
+      select: menuItemSafeSelect,
+    });
+
+    if (!fallbackItem) {
+      return null;
+    }
+
+    return {
+      ...fallbackItem,
+      subcategory: null,
+    };
+  }
 }
 
 // ✅ UPDATE menu item
@@ -51,9 +88,8 @@ export async function PUT(
       updatePayload.subcategory = body.subcategory.trim() || null;
     }
 
-    const existingItem = await prisma.menuItem.findUnique({
-      where: { id: Number(id) },
-    });
+    const itemId = Number(id);
+    const existingItem = await findMenuItemByIdResilient(itemId);
 
     if (!existingItem) {
       return NextResponse.json(
@@ -66,7 +102,7 @@ export async function PUT(
 
     try {
       updatedItem = await prisma.menuItem.update({
-        where: { id: Number(id) },
+        where: { id: itemId },
         data: updatePayload,
       });
     } catch (updateError) {
@@ -74,16 +110,20 @@ export async function PUT(
         throw updateError;
       }
 
-      const { subcategory, ...fallbackPayload } = updatePayload as {
-        subcategory?: string | null;
-        [key: string]: unknown;
-      };
+      const fallbackPayload: Record<string, unknown> = { ...updatePayload };
+      delete fallbackPayload.subcategory;
 
-      // Backward compatibility: retry without subcategory when client schema is older.
-      updatedItem = await prisma.menuItem.update({
-        where: { id: Number(id) },
+      // Backward compatibility: retry without subcategory and avoid selecting missing column.
+      const fallbackUpdatedItem = await prisma.menuItem.update({
+        where: { id: itemId },
         data: fallbackPayload,
+        select: menuItemSafeSelect,
       });
+
+      updatedItem = {
+        ...fallbackUpdatedItem,
+        subcategory: null,
+      };
     }
 
     return NextResponse.json(updatedItem);
@@ -117,9 +157,8 @@ export async function DELETE(
 
     const { id } = await params;
 
-    const existingItem = await prisma.menuItem.findUnique({
-      where: { id: Number(id) },
-    });
+    const itemId = Number(id);
+    const existingItem = await findMenuItemByIdResilient(itemId);
 
     if (!existingItem) {
       return NextResponse.json(
@@ -129,7 +168,7 @@ export async function DELETE(
     }
 
     await prisma.menuItem.delete({
-      where: { id: Number(id) },
+      where: { id: itemId },
     });
 
     return NextResponse.json({

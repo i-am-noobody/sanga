@@ -22,19 +22,49 @@ export default function GallerySection() {
         const res = await fetch("/api/gallery", {
           cache: "no-store",
           signal: controller.signal,
-        });
+        }).catch(() => null);
 
-        const payload = await res.json().catch(() => ({ data: [] }));
+        let payload: any = null;
+        if (res) payload = await res.json().catch(() => ({ data: [] }));
 
-        if (!res.ok) {
-          const message =
-            typeof payload?.error === "string" && payload.error.trim().length > 0
-              ? payload.error
-              : "Unable to load gallery images right now.";
-          throw new Error(message);
+        // If API returned images, use them. Otherwise fall back to bundled public images.
+        if (res && res.ok && Array.isArray(payload?.data) && payload.data.length > 0) {
+          setImages(payload.data);
+        } else {
+          const localFiles = [
+            "/A7406893.jpg",
+            "/A7406900.jpg",
+            "/A7406909.jpg",
+            "/A7406923.jpg",
+            "/A7406932.jpg",
+            "/A7406934.jpg",
+            "/A7406948.jpg",
+            "/A7406954.jpg",
+            "/A7406962.jpg",
+            "/A7406969.jpg",
+            "/A7406984.jpg",
+            "/A7406992.jpg",
+            "/A7407002.jpg",
+            "/A7407005.jpg",
+            "/A7407023.jpg",
+            "/A7407099.jpg",
+            "/A7407115.jpg",
+            "/A7407132.jpg",
+            "/A7407135.jpg",
+            "/A7407142.jpg",
+          ];
+
+          const localImages = localFiles.map((f) => ({
+            asset_id: f.replace(/\W+/g, "_"),
+            secure_url: f,
+            public_id: f.replace(/^\//, ""),
+            created_at: new Date().toISOString(),
+            width: 1200,
+            height: 800,
+          }));
+
+          setImages(localImages);
         }
-
-        setImages(Array.isArray(payload.data) ? payload.data : []);
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") {
           return;

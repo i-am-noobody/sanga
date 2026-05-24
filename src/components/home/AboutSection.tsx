@@ -18,7 +18,7 @@ export default function AboutSection() {
         <div className="relative overflow-hidden rounded-[1.5rem] border border-white/10">
           <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
           <Image
-            src="https://images.pexels.com/photos/1579739/pexels-photo-1579739.jpeg"
+            src="/A7406969.jpg"
             alt="Freshly prepared sandwiches at Mr Sanga"
             width={760}
             height={560}

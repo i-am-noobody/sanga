@@ -27,10 +27,10 @@ export default function Navbar({ cartCount, onOrderClick }: NavbarProps) {
           aria-label="Go to top"
         >
           <Image
-            src="/logo_final.png"
+            src="/logo.png"
             alt="Sanga logo"
-            width={200}
-            height={70}
+            width={300}
+            height={120}
             className="h-11 w-auto transition duration-300 sm:h-12 group-hover:scale-[1.03] group-hover:drop-shadow-[0_0_18px_rgba(218,41,28,0.45)]"
             priority
           />

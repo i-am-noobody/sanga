@@ -18,10 +18,10 @@ export async function GET() {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    // ☁️ Get all resources from Cloudinary folder
+    // ☁️ Get all gallery images from Cloudinary
     const result = await cloudinary.api.resources({
       type: "upload",
-      prefix: "admin_uploads/",
+      prefix: "gallery_uploads/",
       max_results: 100, // Adjust as needed
     });
 
@@ -50,22 +50,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    // 📦 Get file
+    // 📦 Get file and type
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
+    const type = formData.get("type") as string | null;
 
     if (!file || !(file instanceof File)) {
       return NextResponse.json({ error: "No valid file uploaded" }, { status: 400 });
     }
 
+    // Determine folder based on type
+    const folder = type === "menu" ? "menu_uploads" : "gallery_uploads";
+
     // 🔁 Convert to buffer and base64 for Cloudinary upload
     const fileBuffer = Buffer.from(await file.arrayBuffer());
     const base64 = fileBuffer.toString("base64");
     const dataUri = `data:${file.type || "application/octet-stream"};base64,${base64}`;
- console.log(dataUri)
+
     // ☁️ Upload to Cloudinary using upload() for stable result
     const uploadResult = await cloudinary.uploader.upload(dataUri, {
-      folder: "admin_uploads",
+      folder,
       resource_type: "auto",
       use_filename: true,
       unique_filename: true,

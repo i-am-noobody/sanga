@@ -183,6 +183,7 @@ export default function AdminDashboard() {
     setLoading(true);
     const formData = new FormData();
     formData.append("file", imageFile);
+    formData.append("type", "gallery");
 
     try {
       const res = await fetch("/api/upload", {
@@ -221,6 +222,7 @@ export default function AdminDashboard() {
 
       const formData = new FormData();
       formData.append("file", menuImageFile);
+      formData.append("type", "menu");
 
       const uploadRes = await fetch("/api/upload", {
         method: "POST",

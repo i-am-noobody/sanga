@@ -2,6 +2,7 @@ import type { CartItem } from "./types";
 
 interface OrderModalProps {
   isOpen: boolean;
+  isSubmitting: boolean;
   cart: CartItem[];
   customerName: string;
   customerEmail: string;
@@ -18,6 +19,7 @@ interface OrderModalProps {
 
 export default function OrderModal({
   isOpen,
+  isSubmitting,
   cart,
   customerName,
   customerEmail,
@@ -123,9 +125,10 @@ export default function OrderModal({
           <button
             type="button"
             onClick={onSubmit}
-            className="flex-1 bg-red-400 text-black py-3 rounded-lg font-semibold hover:bg-red-500 transition-colors"
+            disabled={isSubmitting}
+            className="flex-1 bg-red-400 text-black py-3 rounded-lg font-semibold hover:bg-red-500 transition-colors disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Place Order
+            {isSubmitting ? "Placing..." : "Place Order"}
           </button>
         </div>
       </div>

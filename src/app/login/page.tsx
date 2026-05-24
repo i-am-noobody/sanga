@@ -40,17 +40,33 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100">
-      <div className="absolute inset-x-0 top-0 h-96 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.18),_transparent_35%)]" />
-      <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center gap-8 px-6 py-8 sm:px-10 lg:px-16">
-        <div className="mx-auto w-full max-w-md">
-          <div className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-8 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
-            <div className="text-center">
-              <p className="text-sm uppercase tracking-[0.3em] text-cyan-300/80">Sanga Admin</p>
-              <h1 className="mt-3 text-3xl font-semibold text-white">Sign in to admin</h1>
-              <p className="mt-2 text-slate-300">Enter your credentials to access the admin dashboard.</p>
+    <main className="min-h-screen bg-[#070707] text-slate-100">
+      <div className="absolute inset-x-0 top-0 h-96 bg-[radial-gradient(circle_at_top,_rgba(218,41,28,0.12),_transparent_35%)]" />
+      <div className="relative mx-auto flex min-h-screen max-w-7xl items-center justify-center px-6 py-12 sm:px-10 lg:px-16">
+        <div className="grid w-full max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
+          <section className="hidden rounded-2xl bg-gradient-to-br from-rose-800/40 to-rose-700/30 p-8 text-white backdrop-blur-md md:block">
+            <div className="flex h-full flex-col justify-center gap-6">
+              <h2 className="text-sm uppercase tracking-widest text-rose-200">Welcome back</h2>
+              <h1 className="text-3xl font-extrabold">Sanga Admin</h1>
+              <p className="text-sm text-rose-100/80">Manage menu, orders and gallery from the admin dashboard. Secure and fast.</p>
+              <div className="mt-4 flex items-center gap-3">
+                <div className="h-12 w-12 rounded-full bg-white/10" />
+                <div>
+                  <p className="text-sm font-semibold">Sanga</p>
+                  <p className="text-xs text-rose-100/60">Restaurant Dashboard</p>
+                </div>
+              </div>
             </div>
-            <form onSubmit={handleLogin} className="mt-8 space-y-5">
+          </section>
+
+          <section className="rounded-[1.5rem] border border-white/6 bg-slate-900/75 p-8 shadow-xl backdrop-blur-lg">
+            <div className="mb-6 text-center">
+              <p className="text-xs uppercase tracking-[0.35em] text-rose-300/80">Administrator</p>
+              <h1 className="mt-3 text-2xl font-bold text-white">Sign in</h1>
+              <p className="mt-2 text-sm text-slate-300/80">Enter your admin credentials to continue</p>
+            </div>
+
+            <form onSubmit={handleLogin} className="space-y-4">
               <label className="block text-sm text-slate-300">
                 Email
                 <input
@@ -58,9 +74,10 @@ export default function LoginPage() {
                   onChange={(event) => setEmail(event.target.value)}
                   type="email"
                   required
-                  className="mt-2 w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition focus:border-cyan-400/70 focus:ring-2 focus:ring-cyan-400/20"
+                  className="mt-2 w-full rounded-xl border border-white/8 bg-slate-950/60 px-4 py-3 text-white outline-none transition focus:border-rose-400 focus:ring-2 focus:ring-rose-400/20"
                 />
               </label>
+
               <label className="block text-sm text-slate-300">
                 Password
                 <input
@@ -68,19 +85,29 @@ export default function LoginPage() {
                   onChange={(event) => setPassword(event.target.value)}
                   type="password"
                   required
-                  className="mt-2 w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition focus:border-cyan-400/70 focus:ring-2 focus:ring-cyan-400/20"
+                  className="mt-2 w-full rounded-xl border border-white/8 bg-slate-950/60 px-4 py-3 text-white outline-none transition focus:border-rose-400 focus:ring-2 focus:ring-rose-400/20"
                 />
               </label>
+
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 text-sm text-slate-300">
+                  <input type="checkbox" className="h-4 w-4 rounded border-white/10 bg-slate-800" />
+                  Remember me
+                </label>
+                <a href="/api/auth/forgot-password" className="text-sm font-medium text-rose-300 hover:underline">Forgot password?</a>
+              </div>
+
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex w-full items-center justify-center rounded-full bg-cyan-400 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex w-full items-center justify-center rounded-full bg-rose-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-rose-500 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading ? "Signing in..." : "Sign in"}
               </button>
+
               {message ? <p className="text-sm text-rose-300">{message}</p> : null}
             </form>
-          </div>
+          </section>
         </div>
       </div>
     </main>

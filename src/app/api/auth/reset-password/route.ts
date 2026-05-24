@@ -1,6 +1,7 @@
 import { prisma } from "../../../lib/prisma";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
+import { isRecoverableAuthDatabaseError } from "../../../lib/auth-db";
 
 export async function POST(req: Request) {
   try {
@@ -36,7 +37,14 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ message: "Password updated" });
-  } catch {
+  } catch (error) {
+    if (isRecoverableAuthDatabaseError(error)) {
+      return NextResponse.json(
+        { error: "Authentication service is temporarily unavailable" },
+        { status: 503 }
+      );
+    }
+
     return NextResponse.json(
       { error: "Server error" },
       { status: 500 }

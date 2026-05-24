@@ -43,7 +43,7 @@ export default function WelcomeBanner({ onClose, isVisible }: WelcomeBannerProps
         className="absolute inset-0 bg-cover bg-center opacity-30"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(15,12,8,0.42), rgba(15,12,8,0.72)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80')",
+            "linear-gradient(rgba(15,12,8,0.42), rgba(15,12,8,0.72)), url('/A7407002.jpg')",
         }}
       />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(218,41,28,0.18),transparent_35%),radial-gradient(circle_at_bottom,rgba(218,41,28,0.14),transparent_28%)]" />

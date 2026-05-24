@@ -8,7 +8,7 @@ interface HeroSectionProps {
 
 const slides = [
   {
-    image: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg",
+    image: "/A7406909.jpg",
     badge: "🥪 Made Fresh to Order",
     title: "Elevating",
     highlight: "Sandwiches",
@@ -16,7 +16,7 @@ const slides = [
     desc: "Chef-crafted recipes with our signature home-style pan-frying.",
   },
   {
-    image: "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg",
+    image: "/A7407115.jpg",
     badge: "🍳 Breakfast Favourite",
     title: "The",
     highlight: "Benny",
@@ -24,7 +24,7 @@ const slides = [
     desc: "Comfort food classics with a refined twist.",
   },
   {
-    image: "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg",
+    image: "/A7407135.jpg",
     badge: "🔥 Signature Special",
     title: "Chilli Beef",
     highlight: "Brisket",

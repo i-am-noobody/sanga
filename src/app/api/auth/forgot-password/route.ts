@@ -2,6 +2,19 @@ import { prisma } from "../../../lib/prisma";
 import crypto from "crypto";
 import { NextResponse } from "next/server";
 import { sendEmail } from "../../../lib/email";
+import { isRecoverableAuthDatabaseError } from "../../../lib/auth-db";
+
+function deriveBaseUrl(req: Request): string {
+  const envBase = process.env.NEXT_PUBLIC_URL?.trim();
+  if (envBase) {
+    return envBase.replace(/\/$/, "");
+  }
+
+  const url = new URL(req.url);
+  const proto = req.headers.get("x-forwarded-proto") ?? url.protocol.replace(":", "");
+  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? url.host;
+  return `${proto}://${host}`.replace(/\/$/, "");
+}
 
 export async function POST(req: Request) {
   try {
@@ -33,12 +46,20 @@ export async function POST(req: Request) {
       },
     });
 
-    const resetLink = `${process.env.NEXT_PUBLIC_URL}/reset-password/${token}`;
+    const baseUrl = deriveBaseUrl(req);
+    const resetLink = `${baseUrl}/reset-password/${token}`;
 
     await sendEmail(email, "Reset Password", resetLink);
 
     return NextResponse.json({ message: "Reset email sent" });
   } catch (error) {
+    if (isRecoverableAuthDatabaseError(error)) {
+      return NextResponse.json(
+        { error: "Authentication service is temporarily unavailable" },
+        { status: 503 }
+      );
+    }
+
     console.error("FORGOT PASSWORD ERROR:", error);
 
     const message =
