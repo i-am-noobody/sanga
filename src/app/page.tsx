@@ -170,7 +170,6 @@ export default function Home() {
       setCustomerPhone("");
       setPickupTime("");
       idempotencyKeyRef.current = null;
-      router.push(`/orders/${createdOrder.id}`);
     } catch (error) {
       console.error("Order submission error:", error);
       alert("Failed to place order. Please check your internet connection and try again.");
@@ -209,6 +208,7 @@ export default function Home() {
           <div>
             <h3 className="text-2xl font-bold text-red-400 mb-4">MR SANGA&apos;S</h3>
             <p className="text-gray-400">Best sandwiches in town</p>
+            <p className="text-gray-400">ABN Number: 68 694 484 832</p>
           </div>
           <div>
             <h4 className="text-lg font-semibold text-red-400 mb-4">Follow Us</h4>
@@ -236,7 +236,7 @@ export default function Home() {
           <div>
             <h4 className="text-lg font-semibold text-red-400 mb-4">Contact</h4>
             <p className="text-gray-400">Brisbane, Australia</p>
-            <p className="text-gray-400">+61 123 456 789</p>
+            <p className="text-gray-400">+61 472 513 267</p>
           </div>
         </div>
       </footer>

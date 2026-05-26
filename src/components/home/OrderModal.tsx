@@ -85,7 +85,7 @@ export default function OrderModal({
               <div key={item.menuItem.id} className="flex justify-between items-center bg-gray-800 p-3 rounded">
                 <div>
                   <p className="font-semibold">{item.menuItem.name}</p>
-                  <p className="text-sm text-gray-400">Rs {item.menuItem.price} each</p>
+                  <p className="text-sm text-gray-400">{item.menuItem.price} $ each</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
@@ -104,12 +104,12 @@ export default function OrderModal({
                     +
                   </button>
                 </div>
-                <p className="font-semibold">Rs {item.menuItem.price * item.quantity}</p>
+                <p className="font-semibold">{item.menuItem.price * item.quantity} $</p>
               </div>
             ))}
             <div className="flex justify-between text-lg font-bold pt-4 border-t border-gray-700">
               <span>Total:</span>
-              <span>Rs {total}</span>
+              <span>{total} $</span>
             </div>
           </div>
         )}

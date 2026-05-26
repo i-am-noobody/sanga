@@ -692,14 +692,10 @@ export async function POST(req: NextRequest) {
       return process.env.NEXT_PUBLIC_URL || `${proto}://${host}`;
     }
 
-    const baseUrl = deriveBaseUrl(req);
-    const orderLink = `${baseUrl.replace(/\/$/, "")}/orders/${order.id}`;
-
     try {
       const emailHtml = `<p>Thank you for your order, ${customerName}.</p>
          <p>Your order number is <strong>#${order.id}</strong> and its current status is <strong>${order.status}</strong>.</p>
-         <p>Click the link below to view your order details and track its status:</p>
-         <p><a href="${orderLink}" style="color:#FBBF24;">View order #${order.id}</a></p>`;
+         <p>We will keep you updated as your order moves forward.</p>`;
 
       await sendEmail(customerEmail, `Your Sanga order #${order.id} is confirmed`, emailHtml);
     } catch (emailError) {

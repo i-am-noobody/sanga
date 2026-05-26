@@ -25,8 +25,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Sanga Admin Dashboard",
-  description: "Modern admin interface for menu and upload management.",
+  title: "Sanga's Cafe",
+  description: "Welcome to Sanga's Cafe, where quality and flavor come together",
 };
 
 export default function RootLayout({

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 
 export default function LocationSection() {
-  const address = "Shop1A-15 Skygate Centre, DFO Brisbane Airport";
+  const address = "Shop 1A 15 Skygate Centre";
   const encodedAddress = encodeURIComponent(address);
 
   return (
@@ -36,7 +36,7 @@ export default function LocationSection() {
         <article className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-[0_8px_24px_rgba(2,6,23,0.28)] backdrop-blur-sm">
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-red-200/90">Address</p>
           <p className="text-sm leading-relaxed text-slate-200">{address}</p>
-          <p className="mt-3 text-xs text-slate-400">Inside Skygate Centre, near DFO Brisbane Airport.</p>
+          <p className="mt-3 text-xs text-slate-400">1-7 the Circuit Brisbane Airport 4008</p>
         </article>
 
         <article className="rounded-2xl border border-red-300/35 bg-red-300/95 p-5 shadow-[0_8px_24px_rgba(218,41,28,0.22)]">

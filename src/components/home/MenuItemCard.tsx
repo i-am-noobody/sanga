@@ -38,7 +38,7 @@ export default function MenuItemCard({
                   className="mb-1 h-px min-w-0 flex-1 border-b border-dotted border-white/25"
                 />
                 <span className="shrink-0 whitespace-nowrap text-base font-medium text-slate-300 sm:text-lg">
-                  Rs {item.price}
+                {item.price} $
                 </span>
               </div>
               <div className="mt-2 flex flex-wrap gap-2">
