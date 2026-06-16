@@ -195,7 +195,7 @@ export default function Home() {
           onOrderNow={() => document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" })}
         />
 
-        <MenuSection onAddToCart={addToCart} />
+        <MenuSection />
         <GallerySection />
         <AboutSection />
         <TestimonialsSection />

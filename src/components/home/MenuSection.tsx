@@ -1,161 +1,135 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import type { MenuItem } from "./types";
-import MenuItemCard from "./MenuItemCard";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-interface MenuSectionProps {
-  onAddToCart: (item: MenuItem) => void;
-}
+const menuImages = [
+  {
+    src: "/menu/menu1 (1).png",
+    alt: "Menu Item 1",
+  },
+  {
+    src: "/menu/menu1 (2).png",
+    alt: "Menu Item 2",
+  },
+  {
+    src: "/menu/menu1 (3).png",
+    alt: "Menu Item 3",
+  },
+  {
+    src: "/menu/menu1 (4).png",
+    alt: "Menu Item 4",
+  },
+];
 
-export default function MenuSection({ onAddToCart }: MenuSectionProps) {
-  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [activeSubcategory, setActiveSubcategory] = useState("All");
+export default function MenuSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    const loadMenu = async () => {
-      try {
-        const res = await fetch("/api/menu", { cache: "no-store" });
-        if (!res.ok) {
-          throw new Error("Unable to fetch menu");
-        }
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % menuImages.length);
+  };
 
-        const payload: unknown = await res.json();
-        const items =
-          Array.isArray(payload)
-            ? payload
-            : Array.isArray((payload as { data?: unknown })?.data)
-              ? ((payload as { data: MenuItem[] }).data ?? [])
-              : [];
+  const prevSlide = () => {
+    setCurrentIndex(
+      (prev) => (prev - 1 + menuImages.length) % menuImages.length
+    );
+  };
 
-        setMenuItems(items);
-        setError(null);
-      } catch (error) {
-        console.error("Failed to load menu:", error);
-        setError("We are refreshing the kitchen menu. Please try again shortly.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    void loadMenu();
-  }, []);
-
-  const categories = [
-    "All",
-    ...Array.from(new Set(menuItems.map((item) => item.category?.trim()).filter(Boolean))),
-  ];
-
-  const categoryFilteredItems =
-    activeCategory === "All"
-      ? menuItems
-      : menuItems.filter((item) => item.category?.trim() === activeCategory);
-
-  const subcategories = [
-    "All",
-    ...Array.from(
-      new Set(
-        categoryFilteredItems
-          .map((item) => item.subcategory?.trim())
-          .filter((subcategory): subcategory is string => Boolean(subcategory))
-      )
-    ),
-  ];
-
-  const filteredItems =
-    activeSubcategory === "All"
-      ? categoryFilteredItems
-      : categoryFilteredItems.filter((item) => item.subcategory?.trim() === activeSubcategory);
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+  };
 
   return (
     <motion.section
       id="menu"
-      className="scroll-mt-24 px-4 py-20 text-center sm:px-6 md:px-8"
-      initial={{ opacity: 0, y: 50 }}
+      className="scroll-mt-24 px-4 py-20"
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.7 }}
       viewport={{ once: true }}
     >
-      <div className="mx-auto mb-10 max-w-6xl">
-        <h2 className="mb-3 text-4xl font-bold text-[#DA291C]">Our Menu</h2>
-        <p className="mx-auto mb-8 max-w-2xl text-sm text-slate-300/80 sm:text-base">
-          Crafted daily and served fresh. Filter by category to quickly find what you are craving.
+      <div className="mx-auto max-w-6xl text-center">
+        <h2 className="mb-3 text-4xl font-bold text-[#DA291C]">
+          Our Menu
+        </h2>
+
+        <p className="mx-auto mb-10 max-w-2xl text-slate-300/80">
+          Explore our signature dishes crafted fresh every day.
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-          {categories.map((category) => (
-            <button
-              key={category}
-              type="button"
-              onClick={() => {
-                setActiveCategory(category);
-                setActiveSubcategory("All");
-              }}
-              className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-all sm:text-sm ${
-                activeCategory === category
-                  ? "border-red-300 bg-red-300 text-slate-950 shadow-[0_8px_18px_rgba(218,41,28,0.35)]"
-                  : "border-white/15 bg-white/5 text-slate-200 hover:border-red-300/45 hover:text-red-200"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+        <div className="relative mx-auto max-w-4xl">
+          {/* Left Arrow */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-0 top-1/2 z-20 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#DA291C] text-white shadow-lg transition-all duration-300 hover:scale-110 hover:bg-[#c12419]"
+            aria-label="Previous image"
+          >
+            <ChevronLeft size={24} />
+          </button>
 
-        {activeCategory !== "All" && subcategories.length > 1 ? (
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-            {subcategories.map((subcategory) => (
+          {/* Right Arrow */}
+          <button
+            onClick={nextSlide}
+            className="absolute right-0 top-1/2 z-20 flex h-12 w-12 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#DA291C] text-white shadow-lg transition-all duration-300 hover:scale-110 hover:bg-[#c12419]"
+            aria-label="Next image"
+          >
+            <ChevronRight size={24} />
+          </button>
+
+          {/* Image Container */}
+          <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+            <div className="relative aspect-[16/9] w-full">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentIndex}
+                  initial={{
+                    opacity: 0,
+                    scale: 1.05,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    scale: 1,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    scale: 0.98,
+                  }}
+                  transition={{
+                    duration: 0.45,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={menuImages[currentIndex].src}
+                    alt={menuImages[currentIndex].alt}
+                    fill
+                    priority
+                    className="object-cover"
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Dots */}
+          <div className="mt-6 flex items-center justify-center gap-3">
+            {menuImages.map((_, index) => (
               <button
-                key={subcategory}
-                type="button"
-                onClick={() => setActiveSubcategory(subcategory)}
-                className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide transition-all sm:text-xs ${
-                  activeSubcategory === subcategory
-                    ? "border-red-300/60 bg-red-300/20 text-red-100"
-                    : "border-white/15 bg-white/5 text-slate-300 hover:border-red-300/45 hover:text-red-200"
+                key={index}
+                onClick={() => goToSlide(index)}
+                aria-label={`Go to slide ${index + 1}`}
+                className={`h-3 rounded-full transition-all duration-300 ${
+                  currentIndex === index
+                    ? "w-10 bg-[#DA291C]"
+                    : "w-3 bg-white/30 hover:bg-white/50"
                 }`}
-              >
-                {subcategory}
-              </button>
+              />
             ))}
           </div>
-        ) : null}
-      </div>
-
-      <div className="mx-auto flex max-w-4xl flex-col gap-4 text-left">
-        {loading ? (
-          <p className="rounded-2xl border border-white/10 bg-white/5 p-8 text-slate-300/90">
-            Loading menu...
-          </p>
-        ) : error ? (
-          <p className="rounded-2xl border border-rose-300/35 bg-rose-950/35 p-8 text-rose-100">
-            {error}
-          </p>
-        ) : menuItems.length === 0 ? (
-          <p className="rounded-2xl border border-white/10 bg-white/5 p-8 text-slate-300/90">
-            No menu items available yet.
-          </p>
-        ) : filteredItems.length === 0 ? (
-          <p className="rounded-2xl border border-white/10 bg-white/5 p-8 text-slate-300/90">
-            No items found in this category.
-          </p>
-        ) : (
-          filteredItems.map((item, index) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <MenuItemCard item={item} onAddToCart={onAddToCart} />
-            </motion.div>
-          ))
-        )}
+        </div>
       </div>
     </motion.section>
   );
