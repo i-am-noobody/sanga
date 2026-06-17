@@ -11,7 +11,7 @@ const menuImages = [
     alt: "Menu Item 1",
   },
   {
-    src: "/menu/menu1 (2).png",
+    src: "/menu/menu1 (4).png",
     alt: "Menu Item 2",
   },
   {
@@ -19,7 +19,7 @@ const menuImages = [
     alt: "Menu Item 3",
   },
   {
-    src: "/menu/menu1 (4).png",
+    src: "/menu/menu1 (2).png",
     alt: "Menu Item 4",
   },
 ];
