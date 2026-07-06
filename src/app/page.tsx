@@ -1,8 +1,7 @@
 ﻿'use client';
 
 import { useRouter } from "next/navigation";
-import { useCallback, useRef, useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CartItem, MenuItem } from "@/components/home/types";
 import Navbar from "@/components/home/Navbar";
 import HeroSection from "@/components/home/HeroSection";
@@ -13,7 +12,6 @@ import TestimonialsSection from "@/components/home/TestimonialsSection";
 import LocationSection from "@/components/home/LocationSection";
 import ContactSection from "@/components/home/ContactSection";
 import OrderModal from "@/components/home/OrderModal";
-import WelcomeBanner from "@/components/home/WelcomeBanner";
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -36,7 +34,6 @@ function InstagramIcon({ className }: { className?: string }) {
 export default function Home() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showBanner, setShowBanner] = useState(true);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
@@ -44,24 +41,6 @@ export default function Home() {
   const [pickupTime, setPickupTime] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const idempotencyKeyRef = useRef<string | null>(null);
-
-  const closeBanner = useCallback(() => {
-    setShowBanner(false);
-  }, []);
-
-  useEffect(() => {
-    if (!showBanner) {
-      document.body.style.overflow = "";
-      return;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [showBanner]);
 
   useEffect(() => {
     idempotencyKeyRef.current = null;
@@ -180,11 +159,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-white font-poppins scroll-smooth">
-      <WelcomeBanner
-        isVisible={showBanner}
-        onClose={closeBanner}
-      />
-      
       <Navbar
         cartCount={cart.length}
         onOrderClick={() => setIsModalOpen(true)}

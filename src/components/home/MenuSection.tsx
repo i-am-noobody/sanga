@@ -7,20 +7,16 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const menuImages = [
   {
-    src: "/menu/menu1 (1).png",
+    src: "/menu/menu1.png",
     alt: "Menu Item 1",
   },
   {
-    src: "/menu/menu1 (4).png",
+    src: "/menu/menu2.png",
     alt: "Menu Item 2",
   },
   {
-    src: "/menu/menu1 (3).png",
+    src: "/menu/menu3.png",
     alt: "Menu Item 3",
-  },
-  {
-    src: "/menu/menu1 (2).png",
-    alt: "Menu Item 4",
   },
 ];
 
